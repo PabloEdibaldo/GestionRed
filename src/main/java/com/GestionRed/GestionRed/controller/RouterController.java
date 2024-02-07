@@ -44,7 +44,7 @@ public class RouterController {
     @GetMapping("system/reboot")
     public ResponseEntity<List<Map<String,String>>>rebootSystem(@RequestParam String ip, @RequestParam String admin,@RequestParam String password){
         try{
-            List<Map<String,String>> resourceData = routerService.systemResourcePrint(ip,admin,password);
+            List<Map<String,String>> resourceData = routerService.systemResourcePrint(ip,admin,password,"/system/resource/print");
             return ResponseEntity.ok(resourceData);
         }catch (MikrotikApiException e){
             throw  new RuntimeException(e);
