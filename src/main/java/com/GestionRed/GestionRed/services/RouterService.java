@@ -104,6 +104,8 @@ public class RouterService {
         }
     }
 
+
+
     public List<Map<String, String>> systemResourcePrint(String ip, String admin, String password,String command ) throws MikrotikApiException {
         ApiConnection connection = null;
         try {
