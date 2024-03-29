@@ -1,7 +1,8 @@
 package com.GestionRed.GestionRed.model;
-
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name="t_cajaNap")
@@ -20,8 +21,8 @@ public class BoxNap{
     private String coordinates;
     @Column(nullable = false)
     private String location;
-    @Column(nullable = false)
-    private Long ports;
+    private int ports;
+
     @Column(nullable = false)
     private String details;
 }

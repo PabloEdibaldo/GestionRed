@@ -22,15 +22,13 @@ public class RouterResponse {
     private String ipAddress;
     private String userMikrotik;
     //Mikrotik
-
     private String password;
-
     //Data
-
     private String location;
     private String security;
     private String security_alt;
     //Configuration Radius
     private String radius_secret;
     private String radius_nas_ip;
+    private String typeServer;
 }

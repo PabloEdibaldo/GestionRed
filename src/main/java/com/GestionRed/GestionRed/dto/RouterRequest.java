@@ -25,4 +25,5 @@ public class RouterRequest {
     //Configuration Radius
     private String radius_secret;
     private String radius_nas_ip;
+    private String typeServer;
 }

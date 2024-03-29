@@ -81,6 +81,7 @@ public  void updateMonitoring(Long id, MonitoringRequest monitoringRequest){
 }
 public void deleteMonitoring(Long id){
     Optional<Monitoring> optionalMonitoring = monitoringRepository.findById(id);
+
     if(optionalMonitoring.isPresent()){
         monitoringRepository.deleteById(id);
     }else {

@@ -7,13 +7,19 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class RedInformationResponse {
+        private  String subnetInfo;
+        private  String ipAddress;
+        private  String ipAddressHex;
+        private  String ipAddressBinary;
+        private  String netmask;
+        private  String netmaskHex;
+        private  String netmaskBinary;
         private  String networkAddress;
-        private  String address;
-        private  String subnetMask;
+        private  String networkAddressHex;
+        private  String networkAddressBinary;
         private  String broadcastAddress;
-
-        private Long totalAddresses;
-        private Long usableAddresses;
-
+        private  String lowAddress;
+        private  String highAddress;
+        private  Long totalUsableAddresses;
 
 }

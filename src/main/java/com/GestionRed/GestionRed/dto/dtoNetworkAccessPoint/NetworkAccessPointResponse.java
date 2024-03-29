@@ -2,6 +2,8 @@ package com.GestionRed.GestionRed.dto.dtoNetworkAccessPoint;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,6 +14,6 @@ public class NetworkAccessPointResponse {
     private String name;
     private String coordinates;
     private String location;
-    private Long ports;
+    private int ports;
     private String details;
 }
