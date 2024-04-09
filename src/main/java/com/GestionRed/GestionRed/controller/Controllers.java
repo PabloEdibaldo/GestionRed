@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/redIpv4")
+@RequestMapping("api/redIpv4/")
 @CrossOrigin(origins = "*")
 class RedIpv4Controller {
     private final RedIpv4Service redIpv4Service;
@@ -46,25 +46,25 @@ class RedIpv4Controller {
     public Optional<List<RedIpv4Response>> getAllRouters(){
         return redIpv4Service.getAllRedIpv4();
     }
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     @ResponseStatus(HttpStatus.OK)
     public void updateRedIpv4(@PathVariable Long id,@RequestBody RedIpv4Request redIpv4Request) throws UnknownHostException {
         redIpv4Service.updateRedIpv4(id, redIpv4Request);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRedIpv4(@PathVariable Long id){
         redIpv4Service.deleteRedIpv4(id);
     }
 
     //-----------------------------------------Get info red (CIDR)----------------------------------------
-    @GetMapping("/calculateCIDR")
+    @GetMapping("calculateCIDR/")
     @ResponseStatus(HttpStatus.OK)
     public RedInformationResponse calculateCIDR(@RequestParam String ip, @RequestParam String cidr) throws UnknownHostException {
         return redIpv4Service.createRed(ip,cidr,false,null);
     }
-    @GetMapping("/ping")
+    @GetMapping("ping/")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<?> pingIp(@RequestParam String ip) throws UnknownHostException {
         return redIpv4Service.pingRedIpv4(ip);
@@ -72,7 +72,7 @@ class RedIpv4Controller {
 }
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("api/routers")
+@RequestMapping("api/routers/")
 @RequiredArgsConstructor
 class RouterController {
     private final RouterService routerService;
@@ -88,18 +88,18 @@ class RouterController {
         return routerService.getAllRouters();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     @ResponseStatus(HttpStatus.OK)
     public void updateRouter(@PathVariable Long id,@RequestBody RouterRequest routerRequest){
         routerService.updateRouter(id, routerRequest);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRouter(@PathVariable Long id){
         routerService.deleteRouter(id);
     }
-    @GetMapping("system/reboot")
+    @GetMapping("system/reboot/")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<Map<String,String>>> rebootSystem(@RequestParam String ip,
                                                                  @RequestParam String admin,
@@ -111,7 +111,7 @@ class RouterController {
             throw  new RuntimeException(e);
         }
     }
-    @GetMapping("/router/info")
+    @GetMapping("router/info/")
     @ResponseStatus(HttpStatus.OK)
     public Map<String, Object> RouterInfo(@RequestParam Long idRouter) throws MikrotikApiException, IOException {
 /*
@@ -126,7 +126,7 @@ class RouterController {
  */
         return routerService.ConfigRouter(idRouter);
     }
-    @GetMapping("/MonitoringInterfaces")
+    @GetMapping("MonitoringInterfaces/")
     @ResponseStatus(HttpStatus.OK)
     public List<Map<String,String>> MonitoringInterfaces(@RequestParam String interfaceMonitoring,
                                      @RequestParam String ip,
@@ -141,7 +141,7 @@ class RouterController {
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("api/monitoring")
+@RequestMapping("api/monitoring/")
 @RequiredArgsConstructor
 class MonitoringController{
     private final MonitoringService monitoringService;
@@ -157,13 +157,13 @@ class MonitoringController{
         return monitoringService.getAllMonitoring();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     @ResponseStatus(HttpStatus.OK)
     public void updateMonitoring(@PathVariable Long id,@RequestBody MonitoringRequest monitoringRequest){
         monitoringService.updateMonitoring(id, monitoringRequest);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMonitoring(@PathVariable Long id){
         monitoringService.deleteMonitoring(id);
@@ -175,7 +175,7 @@ class MonitoringController{
 @CrossOrigin(origins = "*")
 @Slf4j
 @RestController
-@RequestMapping("api/box")
+@RequestMapping("api/box/")
 @RequiredArgsConstructor
 class BoxController{
     private final NetworkAccessPointService networkAccessPointService;
@@ -191,37 +191,37 @@ class BoxController{
         return networkAccessPointService.getallNetworkAccessPoint();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}/")
     @ResponseStatus(HttpStatus.OK)
     public void updateNetworkAccessPoint(@PathVariable Long id,@RequestBody NetworkAccessPointRequest networkAccessPointRequest){
         networkAccessPointService.updateNetworkAccessPoint(id, networkAccessPointRequest);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}/")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteNetworkAccessPoint(@PathVariable Long id){
         networkAccessPointService.deleteNetworkAccessPoint(id);
     }
     //---------------------------------------------Check the ports of each box--------------------------------------------------
-    @GetMapping("/ports/{id}")
+    @GetMapping("ports/{id}/")
     @ResponseStatus(HttpStatus.OK)
     public List<Integer> Ports (@PathVariable Long id ){
         return networkAccessPointService.portsAvailableByNapBox(id);
     }
 
-    @GetMapping("/consultBox/{id}")
+    @GetMapping("consultBox/{id}/")
     @ResponseStatus(HttpStatus.OK)
     public boolean consultBox(@PathVariable Long id){
         return networkAccessPointService.consultNAP(id);
     }
 
-    @PostMapping("/userAssignedPort")
+    @PostMapping("userAssignedPort/")
     @ResponseStatus(HttpStatus.OK)
     public Boolean postPort(@RequestBody PortRequest portRequest){
         log.info("informacion de otro microservicio:{}",portRequest);
         return networkAccessPointService.putPort(portRequest.getBoxNap(),portRequest.getPortNumber(),portRequest.getNameClient());
     }
-    @PostMapping("/EditPortNap")
+    @PostMapping("EditPortNap/")
     @ResponseStatus(HttpStatus.OK)
     public Boolean editPortNap(@RequestBody NameUserRequest nameUserRequest){
         log.info("Nombre del cliente: {}",nameUserRequest.getNameUser());
