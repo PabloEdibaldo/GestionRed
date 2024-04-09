@@ -232,7 +232,7 @@ class BoxController{
 @CrossOrigin(origins = "*")
 @Slf4j
 @RestController
-@RequestMapping("api/QueriesFromOtherMicroservices")
+@RequestMapping("api/QueriesFromOtherMicroservices/")
 @AllArgsConstructor
 class QueriesFromOtherMicroservices{
     private final QueriesFromOtherMicroservicesService queriesFromOtherMicroservicesService;
@@ -245,7 +245,7 @@ class QueriesFromOtherMicroservices{
         queriesFromOtherMicroservicesService.createQueueForPromotion(promotionRequest);
     }*/
     //----------------------------------------assign promotion client -----------------------------------------------------
-    @PostMapping("/assignPromotionClient")
+    @PostMapping("assignPromotionClient/")
     @ResponseStatus(HttpStatus.OK)
     public Object assignPromotionClient(@RequestBody QueriesFromOtherMicroservicesRequest.AssignPromotionRequest assignPromotionRequest) throws MikrotikApiException {
         log.info("assign promotion client (data):{}",assignPromotionRequest);
@@ -260,7 +260,7 @@ class QueriesFromOtherMicroservices{
                 null);
     }
     //----------------------------------------Create client PPPoE-----------------------------------------------------
-    @PostMapping("/createClientPPPoE")
+    @PostMapping("createClientPPPoE/")
     @ResponseStatus(HttpStatus.OK)
     public Object createClientPPPoE(@RequestBody QueriesFromOtherMicroservicesRequest.ClientPPPoERequest clientPPPoERequest) throws MikrotikApiException {
         log.info("Client desde el otro microservicio:{}",clientPPPoERequest);
@@ -275,7 +275,7 @@ class QueriesFromOtherMicroservices{
                         null);
     }
     //----------------------------------------Remove customer from the promotions list to assign them to a PPPoE profile-----------------------------
-    @PostMapping("/packageChangeOfPPPClient")
+    @PostMapping("packageChangeOfPPPClient/")
     @ResponseStatus(HttpStatus.OK)
     public Object packageChangeOfPPPClient(@RequestBody QueriesFromOtherMicroservicesRequest.DeleteClientInListPromotion deleteClientInListPromotion)throws MikrotikApiException{
         return queriesFromOtherMicroservicesService.
@@ -290,7 +290,7 @@ class QueriesFromOtherMicroservices{
     }
 
     //----------------------------------------Cut off the client's internet-----------------------------
-    @PostMapping("/cutServiceClient")
+    @PostMapping("cutServiceClient/")
     @ResponseStatus(HttpStatus.OK)
     public Object CutServiceClient(@RequestBody QueriesFromOtherMicroservicesRequest.CutServiceClientRequest cutServiceClientRequest)throws MikrotikApiException{
 
@@ -307,7 +307,7 @@ class QueriesFromOtherMicroservices{
 
     }
 
-    @PostMapping("/createProfilePPP")
+    @PostMapping("createProfilePPP/")
     @ResponseStatus(HttpStatus.OK)
     public Object createProfilePPP(@RequestBody QueriesFromOtherMicroservicesRequest.CreateProfilePPP createProfilePPP)throws MikrotikApiException{
 
