@@ -70,7 +70,7 @@ class RedIpv4Controller {
         return redIpv4Service.pingRedIpv4(ip);
     }
 }
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/routers")
 @RequiredArgsConstructor
@@ -139,6 +139,7 @@ class RouterController {
 
 }
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/monitoring")
 @RequiredArgsConstructor
@@ -171,6 +172,7 @@ class MonitoringController{
 
 
 
+@CrossOrigin(origins = "*")
 @Slf4j
 @RestController
 @RequestMapping("api/box")
@@ -227,6 +229,7 @@ class BoxController{
     }
 }
 
+@CrossOrigin(origins = "*")
 @Slf4j
 @RestController
 @RequestMapping("api/QueriesFromOtherMicroservices")
