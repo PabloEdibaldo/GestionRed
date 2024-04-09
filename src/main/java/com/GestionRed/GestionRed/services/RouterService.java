@@ -47,7 +47,20 @@ public class RouterService {
 
         return routers.stream().map(this::mapToRouterResponse).toList();
     }
-    private RouterResponse mapToRouterResponse(@NonNull Router router) {
+    private RouterResponse mapToRouterResponse(@NonNull Router router)  {
+        String defaultInfoMessage = "Error retrieving system information.";
+        List<Map<String,String>> system = null;
+
+        try {
+            system = systemResourcePrint(router.getIpAddress(),
+                    router.getUserMikrotik(),
+                    router.getPassword(),
+                    "/system/resource/print");
+
+        } catch (MikrotikApiException e) {
+            system = Collections.singletonList(Collections.singletonMap("message", defaultInfoMessage));
+        }
+
         return RouterResponse.builder()
                 .id(String.valueOf(router.getId()))
                 .name(router.getName())
@@ -60,8 +73,11 @@ public class RouterService {
                 .radius_secret(router.getRadius_secret())
                 .radius_nas_ip(router.getRadius_nas_ip())
                 .typeServer(router.getTypeServer())
+                .infoServer(system)
                 .build();
     }
+
+
     public void updateRouter(Long id, RouterRequest routerRequest) {
         Optional<Router> optionalRouter = routerRepository.findById(id);
 

@@ -49,6 +49,17 @@ public class QueriesFromOtherMicroservicesRequest {
 
     }
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CreateProfilePPP{
+        private Long idRouter;
+        private String name;
+        private String lowSpeed;
+        private String uploadSpeed;
+
+    }
+
 
 }
 

@@ -7,6 +7,9 @@ import jakarta.persistence.Table;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
+import java.util.List;
+import java.util.Map;
+
 
 @Table(name = "t_Router")
 @Getter
@@ -31,4 +34,5 @@ public class RouterResponse {
     private String radius_secret;
     private String radius_nas_ip;
     private String typeServer;
+    private List<Map<String, String>> infoServer;
 }

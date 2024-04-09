@@ -6,7 +6,7 @@ import com.GestionRed.GestionRed.dto.dtoMonitoring.MonitoringResponse;
 import com.GestionRed.GestionRed.dto.dtoNetworkAccessPoint.NetworkAccessPointRequest;
 import com.GestionRed.GestionRed.dto.dtoNetworkAccessPoint.NetworkAccessPointResponse;
 import com.GestionRed.GestionRed.dto.dtoNetworkAccessPoint.dtoPort.PortRequest;
-import com.GestionRed.GestionRed.dto.dtoNetworkAccessPoint.dtoPort.nameUserRequest;
+import com.GestionRed.GestionRed.dto.dtoNetworkAccessPoint.dtoPort.NameUserRequest;
 import com.GestionRed.GestionRed.dto.dtoQueriesFromOtherMicroservices.QueriesFromOtherMicroservicesRequest;
 import com.GestionRed.GestionRed.dto.dtoRedInfo.RedInformationResponse;
 import com.GestionRed.GestionRed.dto.dtoRedIpv4.RedIpv4Request;
@@ -31,6 +31,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/redIpv4")
+@CrossOrigin(origins = "*")
 class RedIpv4Controller {
     private final RedIpv4Service redIpv4Service;
     private final RouterService routerService;
@@ -220,7 +221,7 @@ class BoxController{
     }
     @PostMapping("/EditPortNap")
     @ResponseStatus(HttpStatus.OK)
-    public Boolean editPortNap(@RequestBody nameUserRequest nameUserRequest){
+    public Boolean editPortNap(@RequestBody NameUserRequest nameUserRequest){
         log.info("Nombre del cliente: {}",nameUserRequest.getNameUser());
         return networkAccessPointService.editPortUser(nameUserRequest.getNameUser(),nameUserRequest.getIdNap());
     }
@@ -252,7 +253,8 @@ class QueriesFromOtherMicroservices{
                         assignPromotionRequest,
                         null,
                         null,
-                        null);
+                        null,
+                null);
     }
     //----------------------------------------Create client PPPoE-----------------------------------------------------
     @PostMapping("/createClientPPPoE")
@@ -265,6 +267,7 @@ class QueriesFromOtherMicroservices{
                         clientPPPoERequest.getIdRouter(),
                         null,
                         clientPPPoERequest,
+                        null,
                         null,
                         null);
     }
@@ -279,6 +282,7 @@ class QueriesFromOtherMicroservices{
                         null,
                         null,
                         deleteClientInListPromotion,
+                        null,
                         null);
     }
 
@@ -294,9 +298,29 @@ class QueriesFromOtherMicroservices{
                         null,
                         null,
                         null,
-                        cutServiceClientRequest);
+                        cutServiceClientRequest,
+                        null);
 
 
     }
+
+    @PostMapping("/createProfilePPP")
+    @ResponseStatus(HttpStatus.OK)
+    public Object createProfilePPP(@RequestBody QueriesFromOtherMicroservicesRequest.CreateProfilePPP createProfilePPP)throws MikrotikApiException{
+
+        return queriesFromOtherMicroservicesService.
+                InteractionWithTheSwitch(
+                        4,
+                        createProfilePPP.getIdRouter(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        createProfilePPP);
+
+
+    }
+
+
 
 }

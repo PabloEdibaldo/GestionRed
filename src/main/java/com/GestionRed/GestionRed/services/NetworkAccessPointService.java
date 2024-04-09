@@ -10,9 +10,6 @@ import jakarta.transaction.Transactional;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -38,13 +35,17 @@ public class NetworkAccessPointService {
     //map entity
 
     private NetworkAccessPointResponse mapToNetworkAccessPoint(@NonNull BoxNap boxNap) {
+        List<Port> matchingPorts = portRepository.findAll().stream()
+                .filter(port -> port.getBoxNap().getId().equals(boxNap.getId()))
+                .collect(Collectors.toList());
 
+        //Port port= consultPortAndName(boxNap.getId());
         return NetworkAccessPointResponse.builder()
                 .id(boxNap.getId())
                 .name(boxNap.getName())
                 .coordinates(boxNap.getCoordinates())
                 .location(boxNap.getLocation())
-                .ports(boxNap.getPorts())
+                .ports(matchingPorts)
                 .details(boxNap.getDetails())
                 .build();
     }
@@ -126,7 +127,15 @@ public class NetworkAccessPointService {
         }
     }
     //-----------------------------------------------------------------------end CRUD-----------------------------------------------------
-    //Ports Query
+
+
+
+
+
+
+
+
+
     public List<Integer> portsAvailableByNapBox(Long id){
         try {
             Optional<BoxNap> optionalBoxNap = networkAccessPointRepository.findById(id);

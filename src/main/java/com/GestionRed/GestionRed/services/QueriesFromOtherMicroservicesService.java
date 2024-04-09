@@ -35,7 +35,8 @@ public class QueriesFromOtherMicroservicesService {
             QueriesFromOtherMicroservicesRequest.AssignPromotionRequest assignPromotionRequest,
             QueriesFromOtherMicroservicesRequest.ClientPPPoERequest clientPPPoERequest,
             QueriesFromOtherMicroservicesRequest.DeleteClientInListPromotion deleteClientInListPromotion,
-            QueriesFromOtherMicroservicesRequest.CutServiceClientRequest cutServiceClientRequest
+            QueriesFromOtherMicroservicesRequest.CutServiceClientRequest cutServiceClientRequest,
+            QueriesFromOtherMicroservicesRequest.CreateProfilePPP createProfilePPP
     ) throws MikrotikApiException, IllegalArgumentException {
         //consult the router data through the id
         Optional<Router> optionalRouter = routerRepository.findById(idRouter);
@@ -129,9 +130,18 @@ public class QueriesFromOtherMicroservicesService {
                 * -----------assign rules to list --->/ip firewall filter add chain=forward src-address-list=morosos action=drop
                  * */
 
-
-
-
+//
+//                case 5:
+//                    String commandCreateProfilePPP = String.format("/ppp profile add name=%s rate-limit=%s/%s",
+//                            createProfilePPP.getName(),
+//                            createProfilePPP.getLowSpeed(),
+//                            createProfilePPP.getUploadSpeed());
+//                    List<Map<String,String>> createProfilePPPR =routerService.systemResourcePrint(
+//                            router.getIpAddress(),
+//                            router.getUserMikrotik(),
+//                            router.getPassword(),
+//                            commandCreateProfilePPP);
+//                    return isResponseSuccessful(createProfilePPPR);
             default:
                 throw new IllegalArgumentException("Invalid case action:"+caseAction);
 

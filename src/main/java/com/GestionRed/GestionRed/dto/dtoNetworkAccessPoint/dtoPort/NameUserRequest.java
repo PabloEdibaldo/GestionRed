@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class nameUserRequest {
+public class NameUserRequest {
     String nameUser;
     Long idNap;
 }
