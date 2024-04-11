@@ -99,7 +99,7 @@ class RouterController {
     public void deleteRouter(@PathVariable Long id){
         routerService.deleteRouter(id);
     }
-    @GetMapping("system/reboot/")
+    @GetMapping("system/reboot")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<Map<String,String>>> rebootSystem(@RequestParam String ip,
                                                                  @RequestParam String admin,
@@ -111,7 +111,7 @@ class RouterController {
             throw  new RuntimeException(e);
         }
     }
-    @GetMapping("router/info/")
+    @GetMapping("router/info")
     @ResponseStatus(HttpStatus.OK)
     public Map<String, Object> RouterInfo(@RequestParam Long idRouter) throws MikrotikApiException, IOException {
 /*
