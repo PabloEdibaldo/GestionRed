@@ -48,18 +48,7 @@ public class RouterService {
         return routers.stream().map(this::mapToRouterResponse).toList();
     }
     private RouterResponse mapToRouterResponse(@NonNull Router router) {
-//        String defaultInfoMessage = "Error retrieving system information.";
-//        List<Map<String,String>> system = null;
-//
-//            try {
-//                system = systemResourcePrint(router.getIpAddress(),
-//                        router.getUserMikrotik(),
-//                        router.getPassword(),
-//                        "/system/resource/print");
-//
-//            } catch (MikrotikApiException e) {
-//                system = Collections.singletonList(Collections.singletonMap("message", defaultInfoMessage));
-//            }
+
         String defaultInfoMessage = "Error retrieving system information.";
         List<Map<String,String>> system = null;
         List<Map<String,String>> system1 = null;
@@ -80,6 +69,7 @@ public class RouterService {
                         router.getUserMikrotik(),
                         router.getPassword(),
                         "/system/resource/print");
+
                 for (Map<String, String> entry : system1) {
                     if (entry.containsKey("version")) {
                         version = entry.get("version");
@@ -132,7 +122,7 @@ public class RouterService {
             existingModels.setName(routerRequest.getName());
             existingModels.setIpAddress(routerRequest.getIpAddress());
             existingModels.setUserMikrotik(routerRequest.getUserMikrotik());
-            existingModels.setPassword(routerRequest.getTypeServer());
+            existingModels.setPassword(routerRequest.getPassword());
             existingModels.setLocation(routerRequest.getLocation());
             existingModels.setSecurity(routerRequest.getSecurity());
             existingModels.setSecurity_alt((routerRequest.getSecurity_alt()));
