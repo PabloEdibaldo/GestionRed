@@ -126,7 +126,7 @@ class RouterController {
  */
         return routerService.ConfigRouter(idRouter);
     }
-    @GetMapping("MonitoringInterfaces/")
+    @GetMapping("MonitoringInterfaces")
     @ResponseStatus(HttpStatus.OK)
     public List<Map<String,String>> MonitoringInterfaces(@RequestParam String interfaceMonitoring,
                                      @RequestParam String ip,
