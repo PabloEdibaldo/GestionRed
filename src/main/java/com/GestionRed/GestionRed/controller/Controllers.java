@@ -59,7 +59,7 @@ class RedIpv4Controller {
     }
 
     //-----------------------------------------Get info red (CIDR)----------------------------------------
-    @GetMapping("calculateCIDR/")
+    @GetMapping("calculateCIDR")
     @ResponseStatus(HttpStatus.OK)
     public RedInformationResponse calculateCIDR(@RequestParam String ip, @RequestParam String cidr) throws UnknownHostException {
         return redIpv4Service.createRed(ip,cidr,false,null);
