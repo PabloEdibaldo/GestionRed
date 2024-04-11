@@ -47,19 +47,56 @@ public class RouterService {
 
         return routers.stream().map(this::mapToRouterResponse).toList();
     }
-    private RouterResponse mapToRouterResponse(@NonNull Router router)  {
+    private RouterResponse mapToRouterResponse(@NonNull Router router) {
+//        String defaultInfoMessage = "Error retrieving system information.";
+//        List<Map<String,String>> system = null;
+//
+//            try {
+//                system = systemResourcePrint(router.getIpAddress(),
+//                        router.getUserMikrotik(),
+//                        router.getPassword(),
+//                        "/system/resource/print");
+//
+//            } catch (MikrotikApiException e) {
+//                system = Collections.singletonList(Collections.singletonMap("message", defaultInfoMessage));
+//            }
         String defaultInfoMessage = "Error retrieving system information.";
         List<Map<String,String>> system = null;
+        List<Map<String,String>> system1 = null;
+        String version = null;
+        String cpu = null;
 
-        try {
-            system = systemResourcePrint(router.getIpAddress(),
-                    router.getUserMikrotik(),
-                    router.getPassword(),
-                    "/system/resource/print");
 
-        } catch (MikrotikApiException e) {
-            system = Collections.singletonList(Collections.singletonMap("message", defaultInfoMessage));
+
+
+        if(Objects.equals(router.getTypeServer(), "PPP")){
+            try{
+                system = systemResourcePrint(router.getIpAddress(),
+                        router.getUserMikrotik(),
+                        router.getPassword(),
+                        "/ppp/secret/print detail");
+
+                system1 = systemResourcePrint(router.getIpAddress(),
+                        router.getUserMikrotik(),
+                        router.getPassword(),
+                        "/system/resource/print");
+                for (Map<String, String> entry : system1) {
+                    if (entry.containsKey("version")) {
+                        version = entry.get("version");
+                    }
+                    if (entry.containsKey("cpu")) {
+                        cpu = entry.get("cpu");
+                    }
+                }
+
+
+            }catch (MikrotikApiException e) {
+                system = Collections.singletonList(Collections.singletonMap("message", defaultInfoMessage));
+            }
+
         }
+        int systemLength = (system != null) ? system.size() : 0;
+        String statusSystem = systemLength==0?"desactivado":"activatdo";
 
         return RouterResponse.builder()
                 .id(String.valueOf(router.getId()))
@@ -73,7 +110,15 @@ public class RouterService {
                 .radius_secret(router.getRadius_secret())
                 .radius_nas_ip(router.getRadius_nas_ip())
                 .typeServer(router.getTypeServer())
-                .infoServer(system)
+                //----------------------------------
+
+                //--------------------------------
+                .clients(systemLength)
+                .status(statusSystem)
+                .version(version)
+                .cpu(cpu)
+                //-------------------------------------
+
                 .build();
     }
 

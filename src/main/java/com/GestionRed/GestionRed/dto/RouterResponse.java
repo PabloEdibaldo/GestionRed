@@ -34,5 +34,10 @@ public class RouterResponse {
     private String radius_secret;
     private String radius_nas_ip;
     private String typeServer;
-    private List<Map<String, String>> infoServer;
+
+    //-------------------
+    private int clients;
+    private String status;
+    private String version;
+    private String cpu;
 }
