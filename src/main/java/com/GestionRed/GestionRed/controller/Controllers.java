@@ -247,7 +247,9 @@ class QueriesFromOtherMicroservices{
     //----------------------------------------assign promotion client -----------------------------------------------------
     @PostMapping("assignPromotionClient/")
     @ResponseStatus(HttpStatus.OK)
-    public Object assignPromotionClient(@RequestBody QueriesFromOtherMicroservicesRequest.AssignPromotionRequest assignPromotionRequest) throws MikrotikApiException {
+    public Object assignPromotionClient(
+            @RequestBody QueriesFromOtherMicroservicesRequest.
+                    AssignPromotionRequest assignPromotionRequest) throws MikrotikApiException {
         log.info("assign promotion client (data):{}",assignPromotionRequest);
         return queriesFromOtherMicroservicesService.
                 InteractionWithTheSwitch(
@@ -262,7 +264,9 @@ class QueriesFromOtherMicroservices{
     //----------------------------------------Create client PPPoE-----------------------------------------------------
     @PostMapping("createClientPPPoE/")
     @ResponseStatus(HttpStatus.OK)
-    public Object createClientPPPoE(@RequestBody QueriesFromOtherMicroservicesRequest.ClientPPPoERequest clientPPPoERequest) throws MikrotikApiException {
+    public Object createClientPPPoE(
+            @RequestBody QueriesFromOtherMicroservicesRequest.
+                    ClientPPPoERequest clientPPPoERequest) throws MikrotikApiException {
         log.info("Client desde el otro microservicio:{}",clientPPPoERequest);
         return queriesFromOtherMicroservicesService.
                 InteractionWithTheSwitch(
@@ -277,7 +281,8 @@ class QueriesFromOtherMicroservices{
     //----------------------------------------Remove customer from the promotions list to assign them to a PPPoE profile-----------------------------
     @PostMapping("packageChangeOfPPPClient/")
     @ResponseStatus(HttpStatus.OK)
-    public Object packageChangeOfPPPClient(@RequestBody QueriesFromOtherMicroservicesRequest.DeleteClientInListPromotion deleteClientInListPromotion)throws MikrotikApiException{
+    public Object packageChangeOfPPPClient(@RequestBody QueriesFromOtherMicroservicesRequest.
+            DeleteClientInListPromotion deleteClientInListPromotion)throws MikrotikApiException{
         return queriesFromOtherMicroservicesService.
                 InteractionWithTheSwitch(
                         3,
@@ -292,7 +297,8 @@ class QueriesFromOtherMicroservices{
     //----------------------------------------Cut off the client's internet-----------------------------
     @PostMapping("cutServiceClient/")
     @ResponseStatus(HttpStatus.OK)
-    public Object CutServiceClient(@RequestBody QueriesFromOtherMicroservicesRequest.CutServiceClientRequest cutServiceClientRequest)throws MikrotikApiException{
+    public Object CutServiceClient(@RequestBody QueriesFromOtherMicroservicesRequest.
+            CutServiceClientRequest cutServiceClientRequest)throws MikrotikApiException{
 
         return queriesFromOtherMicroservicesService.
                 InteractionWithTheSwitch(
@@ -309,7 +315,8 @@ class QueriesFromOtherMicroservices{
 
     @PostMapping("createProfilePPP/")
     @ResponseStatus(HttpStatus.OK)
-    public Object createProfilePPP(@RequestBody QueriesFromOtherMicroservicesRequest.CreateProfilePPP createProfilePPP)throws MikrotikApiException{
+    public Object createProfilePPP(@RequestBody QueriesFromOtherMicroservicesRequest.
+            CreateProfilePPP createProfilePPP)throws MikrotikApiException{
 
         return queriesFromOtherMicroservicesService.
                 InteractionWithTheSwitch(
