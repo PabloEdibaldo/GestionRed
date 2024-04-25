@@ -22,4 +22,5 @@ public class RedInformationResponse {
         private  String highAddress;
         private  Long totalUsableAddresses;
 
+
 }

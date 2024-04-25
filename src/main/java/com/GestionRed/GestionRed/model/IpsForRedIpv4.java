@@ -15,10 +15,12 @@ public class IpsForRedIpv4 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String ipAddress;
-    private String ip;
-    private int status;
     @ManyToOne
     @JoinColumn(name = "redIpv4_id", nullable = false)
     private RedIpv4 redIpv4;
+
+    private String ipAddress;
+    private String ip;
+    private int status;
+
 }

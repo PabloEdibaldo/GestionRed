@@ -2,8 +2,6 @@ package com.GestionRed.GestionRed.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
-
 @Entity
 @Table(name="t_cajaNap")
 @Getter

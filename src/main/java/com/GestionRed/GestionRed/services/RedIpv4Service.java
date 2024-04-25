@@ -3,6 +3,7 @@ import com.GestionRed.GestionRed.dto.dtoRedInfo.RedInformationResponse;
 import com.GestionRed.GestionRed.dto.dtoRedIpv4.RedIpv4Request;
 import com.GestionRed.GestionRed.dto.dtoRedIpv4.RedIpv4Response;
 import com.GestionRed.GestionRed.model.IpsForRedIpv4;
+import com.GestionRed.GestionRed.model.Port;
 import com.GestionRed.GestionRed.model.RedIpv4;
 import com.GestionRed.GestionRed.model.Router;
 import com.GestionRed.GestionRed.repository.IpsForRedIpv4Repository;
@@ -33,7 +34,6 @@ public class RedIpv4Service {
     private final RedIpv4Repository redIpv4Repository;
     private final RouterService routerService;
     private final IpsForRedIpv4Repository ipsForRedIpv4Repository;
-    private final RouterRepository routerRepository;
     public void createRedIpv4(RedIpv4Request redIpv4Request) {
         try {
             RedIpv4 redIpv4 = RedIpv4.builder()
@@ -44,8 +44,8 @@ public class RedIpv4Service {
                     .use_type(redIpv4Request.getUse_type())
                     .build();
             redIpv4Repository.save(redIpv4);
-            boolean createIps = true;
-            createRed(redIpv4.getRed_ip(),redIpv4.getCidr(),createIps,redIpv4);
+
+            createRed(redIpv4.getRed_ip(),redIpv4.getCidr(),true,redIpv4);
 
             /*
             Optional<Router> optionalRouter = routerService.getRouterByName(redIpv4Request.getName_router());
@@ -186,10 +186,15 @@ public class RedIpv4Service {
 
         Long totalUsableAddresses =  info.getAddressCountLong();
 
+        String[] addresses = info.getAllAddresses();
+
+
         if (createIps){
             //create list for address
-            String[] addresses = info.getAllAddresses();
+            //String[] addresses = info.getAllAddresses();
+
             for (String address:addresses){
+                log.info("eehh:{}",address);
 
                 IpsForRedIpv4 ipsForRedIpv4 = IpsForRedIpv4.builder()
                         .redIpv4(redIpv4)
@@ -220,23 +225,37 @@ public class RedIpv4Service {
 
     public List<String> ips(Long id){
         try {
-
             Optional<RedIpv4> optionalIpsForRedIpv4 = redIpv4Repository.findById(id);
-            Stream<Router> optionalRouter = routerRepository.findAll().stream().filter(x->x.getName().equals(optionalIpsForRedIpv4.get().getName_router()));
             if(optionalIpsForRedIpv4.isEmpty()){
                 return Collections.emptyList();
             }
             return ipsForRedIpv4Repository.findAll()
                     .stream().filter(ips->ips.getRedIpv4().getId().equals(id)&&ips.getStatus()==0)
-                    .map(IpsForRedIpv4::getIpAddress)
+                    .map(IpsForRedIpv4::getIp)
                     .collect(Collectors.toList());
-
-
         }catch (Exception e){
             return Collections.emptyList();
         }
     }
     //IP address query
+
+    public Boolean putIps(Long id_port, String port, String nameClient){
+
+        List<IpsForRedIpv4> ports = ipsForRedIpv4Repository.findAll().stream().filter(x-> Objects.equals(x.getRedIpv4().getId(), id_port)).toList();
+        for (IpsForRedIpv4 ipsForRedIpv4Filter:ports){
+
+            if (ipsForRedIpv4Filter.getIp() == port && ipsForRedIpv4Filter.getStatus()==0) {
+
+                ipsForRedIpv4Filter.setStatus(1);
+                //ipsForRedIpv4Filter.set(nameClient);
+                ipsForRedIpv4Repository.save(ipsForRedIpv4Filter);
+                return true;
+            }
+        }
+
+        return false;
+
+    }
 
 }
 

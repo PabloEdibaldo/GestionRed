@@ -21,6 +21,12 @@ public class RouterService {
     @Autowired
     private final RouterRepository routerRepository;
 
+
+    public Optional<Router> getRouter(Long id){
+        Optional<Router> optionalRouter = routerRepository.findById(id);
+        return optionalRouter;
+    }
+
     public void createRouter(@NonNull RouterRequest routerRequest) {
        // String encryptedPassword = passwordEncoder.encode(routerRequest.getPassword());
         Router router = Router.builder()
@@ -47,6 +53,8 @@ public class RouterService {
 
         return routers.stream().map(this::mapToRouterResponse).toList();
     }
+
+
     private RouterResponse mapToRouterResponse(@NonNull Router router) {
 
         String defaultInfoMessage = "Error retrieving system information.";

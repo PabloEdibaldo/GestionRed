@@ -15,7 +15,6 @@ import com.GestionRed.GestionRed.model.Router;
 import com.GestionRed.GestionRed.repository.RouterRepository;
 import com.GestionRed.GestionRed.services.*;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.legrange.mikrotik.MikrotikApiException;
@@ -69,6 +68,12 @@ class RedIpv4Controller {
     public ResponseEntity<?> pingIp(@RequestParam String ip) throws UnknownHostException {
         return redIpv4Service.pingRedIpv4(ip);
     }
+
+    @GetMapping("ips/{id}/")
+    @ResponseStatus(HttpStatus.OK)
+    public List<String> pingIp(@PathVariable Long id)  {
+        return redIpv4Service.ips(id);
+    }
 }
 @CrossOrigin(origins = "*")
 @RestController
@@ -92,6 +97,11 @@ class RouterController {
     @ResponseStatus(HttpStatus.OK)
     public void updateRouter(@PathVariable Long id,@RequestBody RouterRequest routerRequest){
         routerService.updateRouter(id, routerRequest);
+    }
+    @GetMapping("getRouter/")
+    @ResponseStatus(HttpStatus.OK)
+    public Optional<Router> getRouter(@RequestParam Long id){
+        return routerService.getRouter(id);
     }
 
     @DeleteMapping("{id}/")
