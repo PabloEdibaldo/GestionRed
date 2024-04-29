@@ -45,6 +45,8 @@ class RedIpv4Controller {
     public Optional<List<RedIpv4Response>> getAllRouters(){
         return redIpv4Service.getAllRedIpv4();
     }
+
+
     @PutMapping("{id}/")
     @ResponseStatus(HttpStatus.OK)
     public void updateRedIpv4(@PathVariable Long id,@RequestBody RedIpv4Request redIpv4Request) throws UnknownHostException {

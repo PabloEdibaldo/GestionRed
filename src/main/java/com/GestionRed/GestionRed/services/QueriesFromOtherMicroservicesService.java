@@ -68,6 +68,7 @@ public class QueriesFromOtherMicroservicesService {
                         nameGenerate,clientPPPoERequest.getUserPassword(),
                         clientPPPoERequest.getUserName(),
                         clientPPPoERequest.getAddress());
+                log.info("command:{}",commandCreateClientPPPoE);
                 //connection from router
                 List<Map<String,String>> response= routerService.systemResourcePrint(
                         router.getIpAddress(),

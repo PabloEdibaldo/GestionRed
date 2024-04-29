@@ -57,44 +57,39 @@ public class RouterService {
 
     private RouterResponse mapToRouterResponse(@NonNull Router router) {
 
+
+
         String defaultInfoMessage = "Error retrieving system information.";
         List<Map<String,String>> system = null;
-        List<Map<String,String>> system1 = null;
         String version = null;
         String cpu = null;
 
+        try {
+            system = systemResourcePrint(router.getIpAddress(),
+                    router.getUserMikrotik(),
+                    router.getPassword(),
+                    getCommandForRouter(router.getTypeServer()));
+
+            log.info("Seerves:{}",getCommandForRouter(router.getTypeServer()));
 
 
+            List<Map<String,String>> system1 = systemResourcePrint(router.getIpAddress(),
+                    router.getUserMikrotik(),
+                    router.getPassword(),
+                    "/system/resource/print");
 
-        if(Objects.equals(router.getTypeServer(), "PPP")){
-            try{
-                system = systemResourcePrint(router.getIpAddress(),
-                        router.getUserMikrotik(),
-                        router.getPassword(),
-                        "/ppp/secret/print detail");
+            Map<String, String> versionAndCpu = extractVersionAndCpu(system1);
+            version = versionAndCpu.get("version");
+            cpu = versionAndCpu.get("cpu");
 
-                system1 = systemResourcePrint(router.getIpAddress(),
-                        router.getUserMikrotik(),
-                        router.getPassword(),
-                        "/system/resource/print");
-
-                for (Map<String, String> entry : system1) {
-                    if (entry.containsKey("version")) {
-                        version = entry.get("version");
-                    }
-                    if (entry.containsKey("cpu")) {
-                        cpu = entry.get("cpu");
-                    }
-                }
-
-
-            }catch (MikrotikApiException e) {
-                system = Collections.singletonList(Collections.singletonMap("message", defaultInfoMessage));
-            }
-
+        } catch (MikrotikApiException e) {
+            system = Collections.singletonList(Collections.singletonMap("message", defaultInfoMessage));
         }
+
         int systemLength = (system != null) ? system.size() : 0;
-        String statusSystem = systemLength==0?"desactivado":"activatdo";
+        String statusSystem = (systemLength == 0) ? "desactivado" : "activatdo";
+
+
 
         return RouterResponse.builder()
                 .id(String.valueOf(router.getId()))
@@ -109,15 +104,34 @@ public class RouterService {
                 .radius_nas_ip(router.getRadius_nas_ip())
                 .typeServer(router.getTypeServer())
                 //----------------------------------
-
                 //--------------------------------
                 .clients(systemLength)
                 .status(statusSystem)
                 .version(version)
                 .cpu(cpu)
                 //-------------------------------------
-
                 .build();
+    }
+    private String getCommandForRouter(String typeServer) {
+        log.info("Server:{}",typeServer);
+        if(typeServer.equals("DHCP")){
+            return "/ip/dhcp-server/lease/print detail";
+        }else  {
+            return "/ppp/secret/print detail";
+        }
+
+    }
+    private Map<String, String> extractVersionAndCpu(List<Map<String, String>> system1) {
+        Map<String, String> result = new HashMap<>();
+        for (Map<String, String> entry : system1) {
+            if (entry.containsKey("version")) {
+                result.put("version", entry.get("version"));
+            }
+            if (entry.containsKey("cpu")) {
+                result.put("cpu", entry.get("cpu"));
+            }
+        }
+        return result;
     }
 
 
