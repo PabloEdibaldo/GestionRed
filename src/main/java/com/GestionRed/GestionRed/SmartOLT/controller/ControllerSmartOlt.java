@@ -3,6 +3,7 @@ package com.GestionRed.GestionRed.SmartOLT.controller;
 
 import com.GestionRed.GestionRed.SmartOLT.services.ServiceConfigOnus;
 import com.GestionRed.GestionRed.dto.dtoRedIpv4.RedIpv4Response;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,35 @@ public class ControllerSmartOlt {
     @GetMapping("getZones/")
     @ResponseStatus(HttpStatus.OK)
     public Object getAllZones(){
-        return serviceConfigOnus.getOnusZones();
+        return serviceConfigOnus.OptionCase(1,"/system/get_zones");
     }
 
     @GetMapping("GetAllUnconfiguredONUs/")
     @ResponseStatus(HttpStatus.OK)
-    public Object GetAllUnconfiguredONUs(){
-        return serviceConfigOnus.GetAllUnconfiguredONUs();
+    public Object GetAllUnconfiguredONUs()  {
+        return serviceConfigOnus.OptionCase(1,"/onu/unconfigured_onus");
     }
+
+    @GetMapping("ListOLT/")
+    @ResponseStatus(HttpStatus.OK)
+    public Object ListOLT()  {
+        return serviceConfigOnus.OptionCase(1,"/system/get_olts");
+    }
+
+
+    @GetMapping("GetONUTypesList/")
+    @ResponseStatus(HttpStatus.OK)
+    public Object GetONUTypesList()  {
+        return serviceConfigOnus.OptionCase(1,"/system/get_onu_types");
+    }
+
+    @GetMapping("GetODBsList/")
+    @ResponseStatus(HttpStatus.OK)
+    public Object GetODBsList()  {
+        return serviceConfigOnus.OptionCase(1,"/system/get_odbs");
+    }
+
+
+
 
 }
