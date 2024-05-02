@@ -20,11 +20,11 @@ public class ServiceConfigOnus {
 
     public Object getOnusZones(){
         HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Token", STR."\{apiProperties.getToken()}");
+        headers.set("X-Token", apiProperties.getToken());
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<Object> response = restTemplate.exchange(
-                STR."\{apiProperties.getUrl()}/system/get_zones",
+                apiProperties.getUrl()+"/system/get_zones",
                 HttpMethod.GET,
                 entity,
                 Object.class
@@ -35,11 +35,11 @@ public class ServiceConfigOnus {
 
     public Object GetAllUnconfiguredONUs(){
         HttpHeaders headers = new HttpHeaders();
-        headers.set("X-Token", STR."\{apiProperties.getToken()}");
+        headers.set("X-Token", apiProperties.getToken());
 
         HttpEntity<String> entity = new HttpEntity<>(headers);
         ResponseEntity<Object> response = restTemplate.exchange(
-                STR."\{apiProperties.getUrl()}/onu/unconfigured_onus",
+                apiProperties.getUrl()+"/onu/unconfigured_onus",
                 HttpMethod.GET,
                 entity,
                 Object.class
