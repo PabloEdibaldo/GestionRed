@@ -37,7 +37,7 @@ public class ServiceConfigOnus {
             //return  responseGET.getBody();
             case 2 -> restTemplate.exchange(apiProperties.getUrl() + linkRequest, HttpMethod.POST, entity, Object.class);
             //return  responsePOST.getBody();
-            default -> throw new IllegalArgumentException(STR."Invalid case action:\{caseOption}");
+            default -> throw new IllegalArgumentException("Invalid case action:" + caseOption);
         };
 
     }
