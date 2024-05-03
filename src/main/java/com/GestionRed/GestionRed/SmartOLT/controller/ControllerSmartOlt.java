@@ -54,6 +54,6 @@ public class ControllerSmartOlt {
     @GetMapping("OnuGetAllOnusDetails/")
     @ResponseStatus(HttpStatus.OK)
     public Object OnuGetAllOnusDetails()  {
-        return serviceConfigOnus.OptionCase(1, "/onu/get_all_onus_details?olt_id");
+        return serviceConfigOnus.OptionCase(1, "/onu/get_all_onus_details");
     }
 }
