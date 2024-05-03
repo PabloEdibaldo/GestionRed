@@ -2,14 +2,11 @@ package com.GestionRed.GestionRed.SmartOLT.controller;
 
 
 import com.GestionRed.GestionRed.SmartOLT.services.ServiceConfigOnus;
-import com.GestionRed.GestionRed.dto.dtoRedIpv4.RedIpv4Response;
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
@@ -17,7 +14,6 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 public class ControllerSmartOlt {
     private final ServiceConfigOnus serviceConfigOnus;
-
 
     @GetMapping("getZones/")
     @ResponseStatus(HttpStatus.OK)
@@ -37,7 +33,6 @@ public class ControllerSmartOlt {
         return serviceConfigOnus.OptionCase(1,"/system/get_olts");
     }
 
-
     @GetMapping("GetONUTypesList/")
     @ResponseStatus(HttpStatus.OK)
     public Object GetONUTypesList()  {
@@ -56,9 +51,9 @@ public class ControllerSmartOlt {
         return serviceConfigOnus.OptionCase(1, "/system/get_speed_profiles");
     }
 
-
-
-
-
-
+    @GetMapping("OnuGetAllOnusDetails/")
+    @ResponseStatus(HttpStatus.OK)
+    public Object OnuGetAllOnusDetails()  {
+        return serviceConfigOnus.OptionCase(1, "/onu/get_all_onus_details?olt_id");
+    }
 }
