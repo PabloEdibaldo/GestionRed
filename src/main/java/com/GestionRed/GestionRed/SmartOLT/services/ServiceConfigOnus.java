@@ -11,9 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Slf4j
 @Service
@@ -25,55 +22,7 @@ public class ServiceConfigOnus {
     ApiProperties apiProperties;
 
 
-//
-//    public Object getOnusZones(){
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("X-Token", apiProperties.getToken());
-//
-//        HttpEntity<String> entity = new HttpEntity<>(headers);
-//        ResponseEntity<Object> response = restTemplate.exchange(
-//                apiProperties.getUrl()+"/system/get_zones",
-//                HttpMethod.GET,
-//                entity,
-//                Object.class
-//        );
-//
-//        return response.getBody();
-//    }
-//
-//    public Object GetAllUnconfiguredONUs(){
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("X-Token", apiProperties.getToken());
-//
-//        HttpEntity<String> entity = new HttpEntity<>(headers);
-//        ResponseEntity<Object> response = restTemplate.exchange(
-//                apiProperties.getUrl()+"/onu/unconfigured_onus",
-//                HttpMethod.GET,
-//                entity,
-//                Object.class
-//        );
-//
-//
-//
-//        return response.getBody();
-//    }
 
-
-//
-//    public Object GetOLTsList(){
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("X-Token", apiProperties.getToken());
-//
-//        HttpEntity<String> entity = new HttpEntity<>(headers);
-//        ResponseEntity<Object> response = restTemplate.exchange(
-//                apiProperties.getUrl()+"/system/get_olts",
-//                HttpMethod.GET,
-//                entity,
-//                Object.class
-//        );
-//
-//        return response.getBody();
-//    }
 
     public Object OptionCase(int caseOption,String linkRequest ){
 

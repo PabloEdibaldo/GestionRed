@@ -46,9 +46,17 @@ public class ControllerSmartOlt {
 
     @GetMapping("GetODBsList/")
     @ResponseStatus(HttpStatus.OK)
-    public Object GetODBsList()  {
-        return serviceConfigOnus.OptionCase(1,"/system/get_odbs");
+    public Object GetODBsList(@RequestParam String id_zone)  {
+        return serviceConfigOnus.OptionCase(1, String.format("/system/get_odbs/%s",id_zone));
     }
+
+    @GetMapping("GetSpeedProfilesList/")
+    @ResponseStatus(HttpStatus.OK)
+    public Object GetSpeedProfilesList()  {
+        return serviceConfigOnus.OptionCase(1, "/system/get_speed_profiles");
+    }
+
+
 
 
 
