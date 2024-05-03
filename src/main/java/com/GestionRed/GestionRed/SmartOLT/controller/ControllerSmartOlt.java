@@ -56,4 +56,11 @@ public class ControllerSmartOlt {
     public Object OnuGetAllOnusDetails()  {
         return serviceConfigOnus.OptionCase(1, "/onu/get_all_onus_details");
     }
+
+    @GetMapping("GetVlans/")
+    @ResponseStatus(HttpStatus.OK)
+    public Object GetVlans(@RequestParam String id_onu)  {
+        return serviceConfigOnus.OptionCase(1, String.format("/olt/get_vlans/%s",id_onu));
+    }
+
 }
