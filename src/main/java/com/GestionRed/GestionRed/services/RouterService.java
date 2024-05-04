@@ -223,8 +223,7 @@ public class RouterService {
             try{
                 return result;
             }catch (Exception e){
-                e.printStackTrace();
-                return null;
+
             }
 
 

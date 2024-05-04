@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
@@ -25,7 +26,24 @@ public class ServiceConfigOnus {
         return switch (caseOption) {
             case 1 -> restTemplate.exchange(apiProperties.getUrl() + linkRequest, HttpMethod.GET, entity, Object.class);
             case 2 -> restTemplate.exchange(apiProperties.getUrl() + linkRequest, HttpMethod.POST, entity, Object.class);
+
+
             default -> throw new IllegalArgumentException("Invalid case action:");
         };
+    }
+
+    public Object GetVlans(String url){
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("X-Token", apiProperties.getToken());
+
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<Object> response = restTemplate.exchange(
+                apiProperties.getUrl()+url,
+               HttpMethod.GET,
+                entity,
+                Object.class
+        );
+
+        return response.getBody();
     }
 }
