@@ -59,7 +59,7 @@ public class ControllerSmartOlt {
 
     @GetMapping("GetVlans/")
     @ResponseStatus(HttpStatus.OK)
-    public Object GetVlans(@RequestParam String id_onu)  {
+    public Object GetVlans(@RequestParam int id_onu)  {
         return serviceConfigOnus.OptionCase(1, "/olt/get_vlans/"+id_onu);
     }
 
