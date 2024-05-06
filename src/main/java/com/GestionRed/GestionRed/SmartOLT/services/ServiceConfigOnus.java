@@ -35,7 +35,8 @@ public class ServiceConfigOnus {
             case 2 -> restTemplate.postForObject(
                     apiProperties.getUrl()+linkRequest,
                     requestDtoAuthorizeONU,
-                    RequestDtoAuthorizeONU.class);
+                    RequestDtoAuthorizeONU.class,
+                    entity);
 
 
             default -> throw new IllegalArgumentException("Invalid case action:");
