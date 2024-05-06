@@ -68,7 +68,7 @@ public class ControllerSmartOlt {
     }
 
 
-    @GetMapping("AuthorizeONU/")
+    @PostMapping("AuthorizeONU/")
     @ResponseStatus(HttpStatus.OK)
     public Object AuthorizeONU(@RequestBody RequestDtoAuthorizeONU requestDtoAuthorizeONU)  {
         log.info("onu autorizar:{}",requestDtoAuthorizeONU);
