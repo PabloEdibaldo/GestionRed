@@ -23,5 +23,4 @@ public class RequestDtoAuthorizeONU {
     private String onu_external_id;
     private String upload_speed_profile_name;
     private String download_speed_profile_name;
-
 }

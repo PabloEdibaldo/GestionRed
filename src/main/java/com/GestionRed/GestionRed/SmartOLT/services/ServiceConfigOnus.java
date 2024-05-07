@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
 
@@ -19,11 +20,14 @@ public class ServiceConfigOnus {
     @Autowired
     ApiProperties apiProperties;
 
-    public Object OptionCase(int caseOption, String linkRequest,  RequestDtoAuthorizeONU requestDtoAuthorizeONU){
+    public Object OptionCase(int caseOption, String linkRequest,   MultiValueMap<String, Object> requestDtoAuthorizeONU){
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Token", apiProperties.getToken());
         HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(requestDtoAuthorizeONU, headers);
+
 
         return switch (caseOption) {
             case 1 -> restTemplate.exchange(
@@ -33,10 +37,10 @@ public class ServiceConfigOnus {
                     Object.class);
 
             case 2 -> restTemplate.exchange(
-                    apiProperties.getUrl()+linkRequest,
-                    HttpMethod.POST,
-                    new HttpEntity<>(requestDtoAuthorizeONU, headers),
-                    Object.class);
+                        apiProperties.getUrl() + linkRequest,
+                        HttpMethod.POST,
+                        requestEntity,
+                        Object.class);
 
 
             default -> throw new IllegalArgumentException("Invalid case action:");
