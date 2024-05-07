@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RequestDtoAuthorizeONU {
-    private String olt_id;
+    private int olt_id;
     private String pon_type;
-    private String board;
-    private String port;
+    private int board;
+    private int port;
     private String sn;
     private String vlan;
     private String onu_type;
