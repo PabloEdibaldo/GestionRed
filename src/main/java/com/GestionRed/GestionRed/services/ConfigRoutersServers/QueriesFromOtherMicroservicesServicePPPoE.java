@@ -1,29 +1,27 @@
-package com.GestionRed.GestionRed.services;
+package com.GestionRed.GestionRed.services.ConfigRoutersServers;
 
 import com.GestionRed.GestionRed.dto.dtoQueriesFromOtherMicroservices.QueriesFromOtherMicroservicesRequest;
 import com.GestionRed.GestionRed.model.Router;
 import com.GestionRed.GestionRed.repository.RouterRepository;
+import com.GestionRed.GestionRed.services.RouterService;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import me.legrange.mikrotik.MikrotikApiException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Service
 @Slf4j
-public class QueriesFromOtherMicroservicesService {
+public class QueriesFromOtherMicroservicesServicePPPoE {
 
     private final RouterService routerService;
     private final RouterRepository routerRepository;
 
 
-    public QueriesFromOtherMicroservicesService(RouterService routerService, RouterRepository routerRepository ) {
+    public QueriesFromOtherMicroservicesServicePPPoE(RouterService routerService, RouterRepository routerRepository ) {
         this.routerService = routerService;
         this.routerRepository = routerRepository;
     }
@@ -80,14 +78,7 @@ public class QueriesFromOtherMicroservicesService {
 
 
             case 3:
-                //package change of a ppp client
 
-                //create error Response
-                //Map<String,String> errorResponse = new HashMap<>();
-                //errorResponse.put("error","Error executing first command " +
-                //"(Could not delete customer in promotion list)");
-
-                //command to remove customer in promotion list
                 String commandDeleteClientInListPromotion = String.format("ip/firewall/address-list/remove [find where address=\"%s\" list=%s]",
                         deleteClientInListPromotion.getAddress(),
                         deleteClientInListPromotion.getNamePromotion());

@@ -8,12 +8,15 @@ import com.GestionRed.GestionRed.dto.dtoNetworkAccessPoint.NetworkAccessPointRes
 import com.GestionRed.GestionRed.dto.dtoNetworkAccessPoint.dtoPort.PortRequest;
 import com.GestionRed.GestionRed.dto.dtoNetworkAccessPoint.dtoPort.NameUserRequest;
 import com.GestionRed.GestionRed.dto.dtoQueriesFromOtherMicroservices.QueriesFromOtherMicroservicesRequest;
+import com.GestionRed.GestionRed.dto.dtoQueriesFromOtherMicroservices.dtoQueriesFromOtherMicroservicesDHCP;
 import com.GestionRed.GestionRed.dto.dtoRedInfo.RedInformationResponse;
 import com.GestionRed.GestionRed.dto.dtoRedIpv4.RedIpv4Request;
 import com.GestionRed.GestionRed.dto.dtoRedIpv4.RedIpv4Response;
 import com.GestionRed.GestionRed.model.Router;
 import com.GestionRed.GestionRed.repository.RouterRepository;
 import com.GestionRed.GestionRed.services.*;
+import com.GestionRed.GestionRed.services.ConfigRoutersServers.QueriesFromOtherMicroservicesServiceDCHP;
+import com.GestionRed.GestionRed.services.ConfigRoutersServers.QueriesFromOtherMicroservicesServicePPPoE;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -247,7 +250,7 @@ class BoxController{
 @RequestMapping("api/QueriesFromOtherMicroservices/")
 @AllArgsConstructor
 class QueriesFromOtherMicroservices{
-    private final QueriesFromOtherMicroservicesService queriesFromOtherMicroservicesService;
+    private final QueriesFromOtherMicroservicesServicePPPoE queriesFromOtherMicroservicesService;
 
     //-------------------------create promotion provided by Users microservice---------------------------
   /*  @PostMapping("/createPromotion")
@@ -343,6 +346,43 @@ class QueriesFromOtherMicroservices{
 
     }
 
+
+
+    @CrossOrigin(origins = "*")
+    @Slf4j
+    @RestController
+    @RequestMapping("api/QueriesFromOtherMicroservicesDHCP/")
+    @AllArgsConstructor
+    static class  QueriesFromOtherMicroservicesDHCP{
+        private final QueriesFromOtherMicroservicesServiceDCHP queriesFromOtherMicroservicesServiceDCHP;
+
+        @PostMapping("createProfileDHCP/")
+        @ResponseStatus(HttpStatus.OK)
+        public Object createLeaseDHCP(@RequestBody
+                                              dtoQueriesFromOtherMicroservicesDHCP.ClientDHCPRequest clientDHCPRequest)throws MikrotikApiException{
+            log.info("client DHCP{}",clientDHCPRequest);
+            return queriesFromOtherMicroservicesServiceDCHP.InteractionWithTheSwitchDHCP(
+                    1,
+                    clientDHCPRequest.getIdRouter(),
+                    clientDHCPRequest,
+                    null
+            );
+        }
+
+        @PostMapping("deleteProfileDHCP/")
+        @ResponseStatus(HttpStatus.OK)
+        public Object deleteLeaseDHCP(@RequestBody
+                                      dtoQueriesFromOtherMicroservicesDHCP.ClientDHCPDeleteRequest clientDHCPDeleteRequest)throws MikrotikApiException{
+
+            log.info("client  DHCP{}",clientDHCPDeleteRequest);
+            return queriesFromOtherMicroservicesServiceDCHP.InteractionWithTheSwitchDHCP(
+                    2,
+                    clientDHCPDeleteRequest.getIdRouter(),
+                    null,
+                    clientDHCPDeleteRequest
+            );
+        }
+    }
 
 
 }
