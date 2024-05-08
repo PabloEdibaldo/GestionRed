@@ -348,41 +348,43 @@ class QueriesFromOtherMicroservices{
 
 
 
-    @CrossOrigin(origins = "*")
-    @Slf4j
-    @RestController
-    @RequestMapping("api/QueriesFromOtherMicroservicesDHCP/")
-    @AllArgsConstructor
-    static class  QueriesFromOtherMicroservicesDHCP{
-        private final QueriesFromOtherMicroservicesServiceDCHP queriesFromOtherMicroservicesServiceDCHP;
 
-        @PostMapping("createProfileDHCP/")
-        @ResponseStatus(HttpStatus.OK)
-        public Object createLeaseDHCP(@RequestBody
-                                              dtoQueriesFromOtherMicroservicesDHCP.ClientDHCPRequest clientDHCPRequest)throws MikrotikApiException{
-            log.info("client DHCP{}",clientDHCPRequest);
-            return queriesFromOtherMicroservicesServiceDCHP.InteractionWithTheSwitchDHCP(
-                    1,
-                    clientDHCPRequest.getIdRouter(),
-                    clientDHCPRequest,
-                    null
-            );
-        }
 
-        @PostMapping("deleteProfileDHCP/")
-        @ResponseStatus(HttpStatus.OK)
-        public Object deleteLeaseDHCP(@RequestBody
-                                      dtoQueriesFromOtherMicroservicesDHCP.ClientDHCPDeleteRequest clientDHCPDeleteRequest)throws MikrotikApiException{
 
-            log.info("client  DHCP{}",clientDHCPDeleteRequest);
-            return queriesFromOtherMicroservicesServiceDCHP.InteractionWithTheSwitchDHCP(
-                    2,
-                    clientDHCPDeleteRequest.getIdRouter(),
-                    null,
-                    clientDHCPDeleteRequest
-            );
-        }
+}
+
+@CrossOrigin(origins = "*")
+@Slf4j
+@RestController
+@RequestMapping("api/QueriesFromOtherMicroservicesDHCP/")
+@AllArgsConstructor
+class  QueriesFromOtherMicroservicesDHCP{
+    private final QueriesFromOtherMicroservicesServiceDCHP queriesFromOtherMicroservicesServiceDCHP;
+
+    @PostMapping("createProfileDHCP/")
+    @ResponseStatus(HttpStatus.OK)
+    public Object createLeaseDHCP(@RequestBody
+                                  dtoQueriesFromOtherMicroservicesDHCP.ClientDHCPRequest clientDHCPRequest)throws MikrotikApiException{
+        log.info("client DHCP{}",clientDHCPRequest);
+        return queriesFromOtherMicroservicesServiceDCHP.InteractionWithTheSwitchDHCP(
+                1,
+                clientDHCPRequest.getIdRouter(),
+                clientDHCPRequest,
+                null
+        );
     }
 
+    @PostMapping("deleteProfileDHCP/")
+    @ResponseStatus(HttpStatus.OK)
+    public Object deleteLeaseDHCP(@RequestBody
+                                  dtoQueriesFromOtherMicroservicesDHCP.ClientDHCPDeleteRequest clientDHCPDeleteRequest)throws MikrotikApiException{
 
+        log.info("client  DHCP{}",clientDHCPDeleteRequest);
+        return queriesFromOtherMicroservicesServiceDCHP.InteractionWithTheSwitchDHCP(
+                2,
+                clientDHCPDeleteRequest.getIdRouter(),
+                null,
+                clientDHCPDeleteRequest
+        );
+    }
 }
