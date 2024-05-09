@@ -5,6 +5,7 @@ import com.GestionRed.GestionRed.SmartOLT.dto.dtoQueriesFromOtherMicroservicesPP
 import com.GestionRed.GestionRed.SmartOLT.services.ServiceConfigOnus;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -13,11 +14,14 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/SmartOlt/")
 @CrossOrigin(origins = "*")
+@Slf4j
 public class ControllerSmartOlt {
     private static final Logger log = LoggerFactory.getLogger(ControllerSmartOlt.class);
     private final ServiceConfigOnus serviceConfigOnus;
@@ -91,22 +95,45 @@ public class ControllerSmartOlt {
         formData.add("onu_external_id", requestDtoAuthorizeONU.getOnu_external_id());
         formData.add("upload_speed_profile_name", requestDtoAuthorizeONU.getUpload_speed_profile_name());
         formData.add("download_speed_profile_name", requestDtoAuthorizeONU.getDownload_speed_profile_name());
-        return  serviceConfigOnus.OptionCase(2,"/onu/authorize_onu",formData);
 
+
+        String onuId = requestDtoAuthorizeONU.getOnu_external_id();
+        String password = requestDtoAuthorizeONU.getPassword();
+
+
+      //  SetONUWANModeToPPPoEForASpecifiedONUUniqueExternalID(onuId,password);
+
+        ResponseEntity<Object> response = serviceConfigOnus.OptionCase(2,"/onu/authorize_onu",formData);
+
+        if (response != null && response.getBody() != null) {
+            Map<String, Object> responseBody = (Map<String, Object>) response.getBody();
+
+
+            if (responseBody.containsKey("response") && responseBody.containsKey("response_code") && responseBody.containsKey("status")) {
+                String responseApi = (String) responseBody.get("response");
+
+                String response_code = (String) responseBody.get("response_code");
+                boolean status = (boolean) responseBody.get("status");
+
+                if (responseApi.equals("ONU configuration saved") && response_code.equals("success") && status) {
+                    SetONUWANModeToPPPoEForASpecifiedONUUniqueExternalID(onuId, password);
+                }
+            }
+        }
+            return response;
     }
-    @PostMapping("SetONUWANModeToPPPoEForASpecifiedONUUniqueExternalID/")
-    @ResponseStatus(HttpStatus.OK)
-    public Object SetONUWANModeToPPPoEForASpecifiedONUUniqueExternalID(@RequestBody dtoQueriesFromOtherMicroservicesPPPoE.requestDtoSetONUWANModeToPPPoE requestDtoSetONUWANModeToPPPoE)  {
+
+    public void SetONUWANModeToPPPoEForASpecifiedONUUniqueExternalID(String onuId, String password)  {
 
         MultiValueMap<String, Object> formData = new LinkedMultiValueMap<>();
-        formData.add("username", requestDtoSetONUWANModeToPPPoE.getUsername());
-        formData.add("password", requestDtoSetONUWANModeToPPPoE.getPassword());
+        formData.add("username", onuId);
+        formData.add("password", password);
         formData.add("configuration_method", "OMCI");
         formData.add("ip_protocol", "ipv4ipv6");
         formData.add("ipv6_prefix_delegation_mode", "DHCPv6-PD");
 
 
-        return serviceConfigOnus.OptionCase(2,String.format("/onu/authorize_onu/%s",requestDtoSetONUWANModeToPPPoE.getIdOnu()),formData);
+        serviceConfigOnus.OptionCase(2, String.format("/onu/set_onu_wan_mode_pppoe/%s", onuId), formData);
     }
 
 
