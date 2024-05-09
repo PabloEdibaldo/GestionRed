@@ -19,7 +19,7 @@ public class ServiceConfigOnus {
     @Autowired
     ApiProperties apiProperties;
 
-    public Object OptionCase(int caseOption,
+    public ResponseEntity<Object> OptionCase(int caseOption,
                              String linkRequest,
                              MultiValueMap<String, Object> requestDtoAuthorizeONU){
         HttpHeaders headers = new HttpHeaders();
