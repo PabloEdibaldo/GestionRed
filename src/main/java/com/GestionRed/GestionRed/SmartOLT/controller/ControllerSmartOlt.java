@@ -5,7 +5,7 @@ import com.GestionRed.GestionRed.SmartOLT.dto.dtoQueriesFromOtherMicroservicesPP
 import com.GestionRed.GestionRed.SmartOLT.services.ServiceConfigOnus;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("api/SmartOlt/")
 @CrossOrigin(origins = "*")
-@Slf4j
+
 public class ControllerSmartOlt {
     private static final Logger log = LoggerFactory.getLogger(ControllerSmartOlt.class);
     private final ServiceConfigOnus serviceConfigOnus;
@@ -100,9 +100,6 @@ public class ControllerSmartOlt {
         String onuId = requestDtoAuthorizeONU.getOnu_external_id();
         String password = requestDtoAuthorizeONU.getPassword();
 
-
-      //  SetONUWANModeToPPPoEForASpecifiedONUUniqueExternalID(onuId,password);
-
         ResponseEntity<Object> response = serviceConfigOnus.OptionCase(2,"/onu/authorize_onu",formData);
 
         if (response != null && response.getBody() != null) {
@@ -116,14 +113,19 @@ public class ControllerSmartOlt {
                 boolean status = (boolean) responseBody.get("status");
 
                 if (responseApi.equals("ONU configuration saved") && response_code.equals("success") && status) {
-                    SetONUWANModeToPPPoEForASpecifiedONUUniqueExternalID(onuId, password);
+
+                    if (requestDtoAuthorizeONU.getModeConfigOnu().equals("PPPoE")) {
+                        SetONUWANModeToPPPoEForASpecifiedONUUniqueExternalID(onuId, password);
+                    } else if(requestDtoAuthorizeONU.getModeConfigOnu().equals("DHCP")){
+                        SetONUWANModeToDHCPForASpecifiedONUUniqueExternalID(onuId);
+                    }
                 }
             }
         }
             return response;
     }
 
-    public void SetONUWANModeToPPPoEForASpecifiedONUUniqueExternalID(String onuId, String password)  {
+     private void SetONUWANModeToPPPoEForASpecifiedONUUniqueExternalID(String onuId, String password)  {
 
         MultiValueMap<String, Object> formData = new LinkedMultiValueMap<>();
         formData.add("username", onuId);
@@ -132,11 +134,19 @@ public class ControllerSmartOlt {
         formData.add("ip_protocol", "ipv4ipv6");
         formData.add("ipv6_prefix_delegation_mode", "DHCPv6-PD");
 
-
         serviceConfigOnus.OptionCase(2, String.format("/onu/set_onu_wan_mode_pppoe/%s", onuId), formData);
     }
 
 
+    private void SetONUWANModeToDHCPForASpecifiedONUUniqueExternalID(String onuId){
+        MultiValueMap<String, Object> formData = new LinkedMultiValueMap<>();
+        formData.add("configuration_method","OMCI");
+        formData.add("ip_protocol","ipv4ipv6");
+        formData.add("ipv6_address_mode","None");
+        formData.add("ipv6_prefix_delegation_mode", "DHCPv6-PD");
+
+        serviceConfigOnus.OptionCase(2, String.format("/onu/set_onu_wan_mode_dhcp/%s",onuId), formData);
+    }
 
 
 

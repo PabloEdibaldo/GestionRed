@@ -345,13 +345,8 @@ class QueriesFromOtherMicroservices{
 
 
     }
-
-
-
-
-
-
 }
+
 
 @CrossOrigin(origins = "*")
 @Slf4j

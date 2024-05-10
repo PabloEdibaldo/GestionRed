@@ -27,6 +27,9 @@ public class dtoQueriesFromOtherMicroservicesPPPoE {
         private String download_speed_profile_name;
 
         private String password;
+
+
+        private String modeConfigOnu;
     }
 
 
