@@ -187,6 +187,22 @@ public class RouterService {
         }
     }
 
+    public List<Map<String,Object>> GetLogs(Long idRouter) throws MikrotikApiException {
+        Optional<Router> router = routerRepository.findById(idRouter);
+
+        if(router.isPresent()) {
+            Router existingRouter = router.get();
+            return Collections.singletonList((Map<String, Object>) systemResourcePrint(existingRouter.getIpAddress(),
+                    existingRouter.getUserMikrotik(),
+                    existingRouter.getPassword(),
+                    "/log/print detail"));
+
+        }
+        return null;
+    }
+
+
+
 
 
     public Map<String,Object> ConfigRouter(Long idRouter) throws MikrotikApiException, IOException {

@@ -27,11 +27,13 @@ public class ServiceConfigOnus {
         HttpEntity<String> entity = new HttpEntity<>(headers);
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(requestDtoAuthorizeONU, headers);
         return switch (caseOption) {
+
             case 1 -> restTemplate.exchange(
                     apiProperties.getUrl() + linkRequest,
                     HttpMethod.GET,
                     entity,
                     Object.class);
+
             case 2 -> restTemplate.exchange(
                         apiProperties.getUrl() + linkRequest,
                         HttpMethod.POST,

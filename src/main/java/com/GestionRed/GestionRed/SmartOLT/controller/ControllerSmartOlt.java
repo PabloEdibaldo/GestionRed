@@ -107,8 +107,8 @@ public class ControllerSmartOlt {
 
 
             if (responseBody.containsKey("response") && responseBody.containsKey("response_code") && responseBody.containsKey("status")) {
-                String responseApi = (String) responseBody.get("response");
 
+                String responseApi = (String) responseBody.get("response");
                 String response_code = (String) responseBody.get("response_code");
                 boolean status = (boolean) responseBody.get("status");
 

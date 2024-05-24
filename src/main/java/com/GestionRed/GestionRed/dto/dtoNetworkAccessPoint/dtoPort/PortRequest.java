@@ -11,6 +11,7 @@ public class PortRequest {
     private Long boxNap;
     private int portNumber;
     private String nameClient;
+    private Long idClient;
 
 
 }

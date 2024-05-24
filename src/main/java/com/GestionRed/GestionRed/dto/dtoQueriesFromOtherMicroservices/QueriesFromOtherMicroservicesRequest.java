@@ -60,6 +60,15 @@ public class QueriesFromOtherMicroservicesRequest {
 
     }
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CutServicePPPoEClient{
+        private Long idRouter;
+        private String remoteAddress;
+
+    }
+
 
 }
 

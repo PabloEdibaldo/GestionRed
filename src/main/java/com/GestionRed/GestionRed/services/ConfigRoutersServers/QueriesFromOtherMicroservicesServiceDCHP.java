@@ -25,7 +25,8 @@ public class QueriesFromOtherMicroservicesServiceDCHP {
     public Object InteractionWithTheSwitchDHCP(int caseAction,
                                                Long idRouter,
                                                dtoQueriesFromOtherMicroservicesDHCP.ClientDHCPRequest clientDHCPRequest,
-                                               dtoQueriesFromOtherMicroservicesDHCP.ClientDHCPDeleteRequest deleteDCHPClient
+                                               dtoQueriesFromOtherMicroservicesDHCP.ClientDHCPDeleteRequest deleteDCHPClient,
+                                               dtoQueriesFromOtherMicroservicesDHCP.cutServiceClientDHCPRequest cutServiceClientDHCPRequest
     ) throws MikrotikApiException {
         Optional<Router> optionalRouter = routerRepository.findById(idRouter);
         //check if the router exists
@@ -57,6 +58,18 @@ public class QueriesFromOtherMicroservicesServiceDCHP {
                         router.getIpAddress(),
                         router.getUserMikrotik(),
                         router.getPassword(), deleteLeaseInSwitch);
+
+            }
+            case 3 -> {
+                String commandCutServiceClientDHCPRequest = String.format(
+                        "/ip/firewall/filter/add chain=forward src-mac-address=\"%s\" action=drop comment=\"%s\"",
+                        cutServiceClientDHCPRequest.getMacAddress(),
+                        cutServiceClientDHCPRequest.getNameClientDHCP()
+                );
+                yield routerService.systemResourcePrint(
+                        router.getIpAddress(),
+                        router.getUserMikrotik(),
+                        router.getPassword(), commandCutServiceClientDHCPRequest);
 
             }
             default -> throw new IllegalArgumentException("Invalid case action:" + caseAction);

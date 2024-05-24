@@ -23,4 +23,13 @@ public class dtoQueriesFromOtherMicroservicesDHCP {
         private String address;
         private Long idRouter;
     }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class cutServiceClientDHCPRequest{
+        private String macAddress;
+        private Long idRouter;
+        private String nameClientDHCP;
+    }
 }

@@ -34,7 +34,8 @@ public class QueriesFromOtherMicroservicesServicePPPoE {
             QueriesFromOtherMicroservicesRequest.ClientPPPoERequest clientPPPoERequest,
             QueriesFromOtherMicroservicesRequest.DeleteClientInListPromotion deleteClientInListPromotion,
             QueriesFromOtherMicroservicesRequest.CutServiceClientRequest cutServiceClientRequest,
-            QueriesFromOtherMicroservicesRequest.CreateProfilePPP createProfilePPP
+            QueriesFromOtherMicroservicesRequest.CreateProfilePPP createProfilePPP,
+            QueriesFromOtherMicroservicesRequest.CutServicePPPoEClient cutServicePPPoEClient
     ) throws MikrotikApiException, IllegalArgumentException {
         //consult the router data through the id
         Optional<Router> optionalRouter = routerRepository.findById(idRouter);
@@ -110,12 +111,27 @@ public class QueriesFromOtherMicroservicesServicePPPoE {
                 String commandCutServiceClient = String.format("/ip firewall address-list add list=delinquentClientPPPoE address=%s comment=\"%s delinquent client\"",
                         cutServiceClientRequest.getAddress(),
                         cutServiceClientRequest.getNameClient());
-                List<Map<String,String>> switchCaseResultscommandCutServiceClient =routerService.systemResourcePrint(
+                List<Map<String,String>> switchCaseResultsCommandCutServiceClient =routerService.systemResourcePrint(
                         router.getIpAddress(),
                         router.getUserMikrotik(),
                         router.getPassword(),
                         commandCutServiceClient);
-                return isResponseSuccessful(switchCaseResultscommandCutServiceClient);
+                return isResponseSuccessful(switchCaseResultsCommandCutServiceClient);
+
+            case 5:
+                String commandCutServicePPoEClient = String.format("/ppp/secret/disable [find remote-address=\"$s\"]",cutServicePPPoEClient.getRemoteAddress());
+
+                List<Map<String,String>> switchCaseResultsCommandCutServicePPPoEClient =routerService.systemResourcePrint(
+                        router.getIpAddress(),
+                        router.getUserMikrotik(),
+                        router.getPassword(),
+                        commandCutServicePPoEClient);
+                return isResponseSuccessful(switchCaseResultsCommandCutServicePPPoEClient);
+
+
+
+
+
 
                 /*
                 * -----------Create list delinquent client: /ip firewall address-list add list=morosos address=192.168.1.100 comment="Cliente moroso"

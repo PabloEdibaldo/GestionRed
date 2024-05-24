@@ -21,6 +21,8 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.legrange.mikrotik.MikrotikApiException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,7 @@ import java.util.Map;
 import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 @RequestMapping("api/redIpv4/")
 @CrossOrigin(origins = "*")
 class RedIpv4Controller {
@@ -80,11 +83,13 @@ class RedIpv4Controller {
         return redIpv4Service.ips(id);
     }
 }
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/routers/")
 @RequiredArgsConstructor
 class RouterController {
+    private static final Logger log = LoggerFactory.getLogger(RouterController.class);
     private final RouterService routerService;
     private final RouterRepository routerRepository;
     @PostMapping
@@ -150,6 +155,12 @@ class RouterController {
         return routerService.trafficMonitoringInterfaces(interfaceMonitoring, ip, userMikrotik, password);
     }
 
+    @GetMapping("Logs")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Map<String, Object>> logsGet(@RequestParam Long idRouter)throws MikrotikApiException{
+        log.info("idRouter:{}",idRouter);
+        return routerService.GetLogs(idRouter);
+    }
     //-----------------------------------------Query to obtain tha name of a router-----------------------------
 
 }
@@ -184,8 +195,6 @@ class MonitoringController{
         monitoringService.deleteMonitoring(id);
     }
 }
-
-
 
 @CrossOrigin(origins = "*")
 @Slf4j
@@ -234,7 +243,7 @@ class BoxController{
     @ResponseStatus(HttpStatus.OK)
     public Boolean postPort(@RequestBody PortRequest portRequest){
         log.info("informacion de otro microservicio:{}",portRequest);
-        return networkAccessPointService.putPort(portRequest.getBoxNap(),portRequest.getPortNumber(),portRequest.getNameClient());
+        return networkAccessPointService.putPort(portRequest.getBoxNap(),portRequest.getPortNumber(),portRequest.getNameClient(),portRequest.getIdClient());
     }
     @PostMapping("EditPortNap/")
     @ResponseStatus(HttpStatus.OK)
@@ -274,7 +283,8 @@ class QueriesFromOtherMicroservices{
                         null,
                         null,
                         null,
-                null);
+                        null,
+                        null);
     }
     //----------------------------------------Create client PPPoE-----------------------------------------------------
     @PostMapping("createClientPPPoE/")
@@ -291,6 +301,7 @@ class QueriesFromOtherMicroservices{
                         clientPPPoERequest,
                         null,
                         null,
+                        null,
                         null);
     }
     //----------------------------------------Remove customer from the promotions list to assign them to a PPPoE profile-----------------------------
@@ -305,6 +316,7 @@ class QueriesFromOtherMicroservices{
                         null,
                         null,
                         deleteClientInListPromotion,
+                        null,
                         null,
                         null);
     }
@@ -323,6 +335,7 @@ class QueriesFromOtherMicroservices{
                         null,
                         null,
                         cutServiceClientRequest,
+                        null,
                         null);
 
 
@@ -341,10 +354,34 @@ class QueriesFromOtherMicroservices{
                         null,
                         null,
                         null,
-                        createProfilePPP);
+                        createProfilePPP,
+                        null);
 
 
     }
+
+    @PostMapping("cutServiceClientPPPoE/")
+    @ResponseStatus(HttpStatus.OK)
+    public Object cutServiceClientPPPoE(@RequestBody QueriesFromOtherMicroservicesRequest.
+            CutServicePPPoEClient cutServicePPPoEClient)throws MikrotikApiException{
+
+        return queriesFromOtherMicroservicesService.
+                InteractionWithTheSwitch(
+                        5,
+                        cutServicePPPoEClient.getIdRouter(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        cutServicePPPoEClient);
+
+    }
+
+
+
+
+
 }
 
 
@@ -365,6 +402,7 @@ class  QueriesFromOtherMicroservicesDHCP{
                 1,
                 clientDHCPRequest.getIdRouter(),
                 clientDHCPRequest,
+                null,
                 null
         );
 
@@ -380,7 +418,23 @@ class  QueriesFromOtherMicroservicesDHCP{
                 2,
                 clientDHCPDeleteRequest.getIdRouter(),
                 null,
-                clientDHCPDeleteRequest
+                clientDHCPDeleteRequest,
+                null
+        );
+    }
+
+    @PostMapping("cutServiceClientDHCP/")
+    @ResponseStatus(HttpStatus.OK)
+    public Object cutServiceClientDHCP(@RequestBody
+                                  dtoQueriesFromOtherMicroservicesDHCP.cutServiceClientDHCPRequest cutServiceClientDHCPRequest)throws MikrotikApiException{
+
+        log.info("client  DHCP{}",cutServiceClientDHCPRequest);
+        return queriesFromOtherMicroservicesServiceDCHP.InteractionWithTheSwitchDHCP(
+                3,
+                cutServiceClientDHCPRequest.getIdRouter(),
+                null,
+                null,
+                cutServiceClientDHCPRequest
         );
     }
 }

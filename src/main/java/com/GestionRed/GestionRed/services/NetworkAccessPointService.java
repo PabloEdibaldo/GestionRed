@@ -154,7 +154,7 @@ public class NetworkAccessPointService {
         Optional<BoxNap> optionalBoxNap = networkAccessPointRepository.findById(id);
         return optionalBoxNap.isPresent();
     }
-    public Boolean putPort(Long id_port, int port, String nameClient){
+    public Boolean putPort(Long id_port, int port, String nameClient,Long idClient){
 
         List<Port> ports = portRepository.findAll().stream().filter(x-> Objects.equals(x.getBoxNap().getId(), id_port)).toList();
         for (Port portFilter:ports){
@@ -163,7 +163,9 @@ public class NetworkAccessPointService {
 
                 portFilter.setStatus(1);
                 portFilter.setNameClient(nameClient);
+                portFilter.setIdClient(idClient);
                 portRepository.save(portFilter);
+
                 return true;
                         //ResponseEntity.status(HttpStatus.OK).body("port assigned to user:"+portFilter.getPortNumber());
             }
@@ -193,4 +195,38 @@ public class NetworkAccessPointService {
         }
         return false;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

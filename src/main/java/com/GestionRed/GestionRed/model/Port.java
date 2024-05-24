@@ -22,6 +22,7 @@ public class Port {
     @Column(nullable = false)
     private int status;
     private String nameClient;
+    private Long idClient;
 
 
 }
