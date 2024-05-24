@@ -157,7 +157,7 @@ class RouterController {
 
     @GetMapping("Logs")
     @ResponseStatus(HttpStatus.OK)
-    public List<Map<String, Object>> logsGet(@RequestParam Long idRouter)throws MikrotikApiException{
+    public List<Map<String, String>> logsGet(@RequestParam Long idRouter)throws MikrotikApiException{
         log.info("idRouter:{}",idRouter);
         return routerService.GetLogs(idRouter);
     }
