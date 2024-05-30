@@ -240,8 +240,9 @@ public class RedIpv4Service {
     //IP address query
 
     public Boolean putIps(Long id_port, String port, String nameClient){
-
+        log.info("ip-->:{}",id_port);
         List<IpsForRedIpv4> ports = ipsForRedIpv4Repository.findAll().stream().filter(x-> Objects.equals(x.getRedIpv4().getId(), id_port)).toList();
+        log.info("ips:{}",ports);
         for (IpsForRedIpv4 ipsForRedIpv4Filter:ports){
 
             if (ipsForRedIpv4Filter.getIp() == port && ipsForRedIpv4Filter.getStatus()==0) {
