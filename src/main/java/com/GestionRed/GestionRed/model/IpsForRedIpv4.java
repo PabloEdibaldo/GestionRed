@@ -22,5 +22,6 @@ public class IpsForRedIpv4 {
     private String ipAddress;
     private String ip;
     private int status;
+    private String nameClient;
 
 }

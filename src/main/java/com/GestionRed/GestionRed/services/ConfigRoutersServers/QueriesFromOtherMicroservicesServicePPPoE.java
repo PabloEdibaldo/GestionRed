@@ -128,9 +128,15 @@ public class QueriesFromOtherMicroservicesServicePPPoE {
                         commandCutServicePPoEClient);
                 return isResponseSuccessful(switchCaseResultsCommandCutServicePPPoEClient);
 
+            case 6:
+                String commandReactivateServiceClientPPPoE = String.format("/ppp/secret/enable [find remote-address=\"$s\"]",cutServicePPPoEClient.getRemoteAddress());
 
-
-
+                List<Map<String,String>> ReactivateServiceClientPPPoE =routerService.systemResourcePrint(
+                        router.getIpAddress(),
+                        router.getUserMikrotik(),
+                        router.getPassword(),
+                        commandReactivateServiceClientPPPoE);
+                return isResponseSuccessful(ReactivateServiceClientPPPoE);
 
 
                 /*
@@ -150,6 +156,7 @@ public class QueriesFromOtherMicroservicesServicePPPoE {
 //                            router.getPassword(),
 //                            commandCreateProfilePPP);
 //                    return isResponseSuccessful(createProfilePPPR);
+
             default:
                 throw new IllegalArgumentException("Invalid case action:"+caseAction);
 

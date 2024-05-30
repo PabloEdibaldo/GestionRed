@@ -247,7 +247,7 @@ public class RedIpv4Service {
             if (ipsForRedIpv4Filter.getIp() == port && ipsForRedIpv4Filter.getStatus()==0) {
 
                 ipsForRedIpv4Filter.setStatus(1);
-                //ipsForRedIpv4Filter.set(nameClient);
+                ipsForRedIpv4Filter.setNameClient(nameClient);
                 ipsForRedIpv4Repository.save(ipsForRedIpv4Filter);
                 return true;
             }
@@ -255,6 +255,19 @@ public class RedIpv4Service {
 
         return false;
 
+    }
+    public Boolean editIpClient(String nameUser, Long idRedIpv4){
+        List<IpsForRedIpv4> ipsForRedIpv4s = ipsForRedIpv4Repository.findAll().stream().filter(x->Objects.equals(x.getRedIpv4().getId(),idRedIpv4)).toList();
+        for (IpsForRedIpv4 ipsForRedIpv4:ipsForRedIpv4s){
+            if(Objects.equals(ipsForRedIpv4.getNameClient(),nameUser)){
+                ipsForRedIpv4.setStatus(0);
+                ipsForRedIpv4.setNameClient(null);
+                ipsForRedIpv4Repository.delete(ipsForRedIpv4);
+            return true;
+            }
+
+        }
+        return false;
     }
 
 }

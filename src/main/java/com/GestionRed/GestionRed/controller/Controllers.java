@@ -12,6 +12,7 @@ import com.GestionRed.GestionRed.dto.dtoQueriesFromOtherMicroservices.dtoQueries
 import com.GestionRed.GestionRed.dto.dtoRedInfo.RedInformationResponse;
 import com.GestionRed.GestionRed.dto.dtoRedIpv4.RedIpv4Request;
 import com.GestionRed.GestionRed.dto.dtoRedIpv4.RedIpv4Response;
+import com.GestionRed.GestionRed.dto.dtoRedIpv4.dtoIps.IpsRequest;
 import com.GestionRed.GestionRed.model.Router;
 import com.GestionRed.GestionRed.repository.RouterRepository;
 import com.GestionRed.GestionRed.services.*;
@@ -80,6 +81,18 @@ class RedIpv4Controller {
     @ResponseStatus(HttpStatus.OK)
     public List<String> pingIp(@PathVariable Long id)  {
         return redIpv4Service.ips(id);
+    }
+
+    @PostMapping("putIps/")
+    @ResponseStatus(HttpStatus.OK)
+    public Boolean putIps(@RequestBody IpsRequest.IpsRequestConfig ipsRequest){
+        return redIpv4Service.putIps(ipsRequest.getIdRedIpv4(),ipsRequest.getIp(),ipsRequest.getUserName());
+    }
+
+    @PostMapping("editIpClient/")
+    @ResponseStatus(HttpStatus.OK)
+    public Boolean editIpClient(@RequestBody IpsRequest.DeleteRequestConfig deleteRequestConfig){
+        return redIpv4Service.editIpClient(deleteRequestConfig.getUserName(),deleteRequestConfig.getIdRedIpv4());
     }
 }
 
@@ -367,6 +380,23 @@ class QueriesFromOtherMicroservices{
         return queriesFromOtherMicroservicesService.
                 InteractionWithTheSwitch(
                         5,
+                        cutServicePPPoEClient.getIdRouter(),
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        cutServicePPPoEClient);
+
+    }
+    @PostMapping("reactivateServiceClientPPPoE/")
+    @ResponseStatus(HttpStatus.OK)
+    public Object reactivateServiceClientPPPoE(@RequestBody QueriesFromOtherMicroservicesRequest.
+            CutServicePPPoEClient cutServicePPPoEClient)throws MikrotikApiException{
+
+        return queriesFromOtherMicroservicesService.
+                InteractionWithTheSwitch(
+                        6,
                         cutServicePPPoEClient.getIdRouter(),
                         null,
                         null,
