@@ -239,15 +239,16 @@ public class RedIpv4Service {
     }
     //IP address query
 
-    public Boolean putIps(Long id_port, String port, String nameClient){
-        log.info("ip-->:{}",id_port);
-        List<IpsForRedIpv4> ports = ipsForRedIpv4Repository.findAll().stream().filter(x-> Objects.equals(x.getRedIpv4().getId(), id_port)).toList();
-        
-        for (IpsForRedIpv4 ipsForRedIpv4Filter:ports){
-            log.info("kdxebhd{}",ipsForRedIpv4Filter.getIp());
-            log.info("ip lo que puse{}",port);
+    public Boolean putIps(Long id_port, String ip, String nameClient){
+        log.info("idIpv4-->:{}",id_port);
+        log.info("ip-->:{}",ip);
 
-            if (ipsForRedIpv4Filter.getIp() == port && ipsForRedIpv4Filter.getStatus()==0) {
+        List<IpsForRedIpv4> ports = ipsForRedIpv4Repository.findAll().stream().filter(x-> Objects.equals(x.getRedIpv4().getId(), id_port)).toList();
+
+        for (IpsForRedIpv4 ipsForRedIpv4Filter:ports){
+            log.info("ips iteradas{}",ipsForRedIpv4Filter.getIp());
+
+            if (ipsForRedIpv4Filter.getIp() == ip && ipsForRedIpv4Filter.getStatus()==0) {
 
                 ipsForRedIpv4Filter.setStatus(1);
                 ipsForRedIpv4Filter.setNameClient(nameClient);
