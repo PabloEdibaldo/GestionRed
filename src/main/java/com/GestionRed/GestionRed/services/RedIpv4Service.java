@@ -248,7 +248,7 @@ public class RedIpv4Service {
         for (IpsForRedIpv4 ipsForRedIpv4Filter:ports){
             log.info("ips iteradas{}",ipsForRedIpv4Filter.getIp());
 
-            if (ipsForRedIpv4Filter.getIp() == ip && ipsForRedIpv4Filter.getStatus()==0) {
+            if (ipsForRedIpv4Filter.getIp().equals(ip)  && ipsForRedIpv4Filter.getStatus()==0) {
 
                 ipsForRedIpv4Filter.setStatus(1);
                 ipsForRedIpv4Filter.setNameClient(nameClient);
