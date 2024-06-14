@@ -39,6 +39,7 @@ public class RedIpv4Service {
             RedIpv4 redIpv4 = RedIpv4.builder()
                     .name(redIpv4Request.getName())
                     .name_router(redIpv4Request.getName_router())
+                    .idRouter(redIpv4Request.getIdRouter())
                     .red_ip(redIpv4Request.getRed_ip())
                     .cidr(redIpv4Request.getCidr())
                     .use_type(redIpv4Request.getUse_type())
@@ -82,6 +83,7 @@ public class RedIpv4Service {
                 .id(redIpv4.getId())
                 .name(redIpv4.getName())
                 .name_router(redIpv4.getName_router())
+                .idRouter(redIpv4.getIdRouter())
                 .red_ip(redIpv4.getRed_ip())
                 .cidr(redIpv4.getCidr())
                 .use_type(redIpv4.getUse_type())
@@ -96,6 +98,7 @@ public class RedIpv4Service {
             RedIpv4 exitingModels = optionalRedIpv4.get();
             exitingModels.setName(redIpv4Request.getName());
             exitingModels.setName_router(redIpv4Request.getName_router());
+            exitingModels.setIdRouter(redIpv4Request.getIdRouter());
             exitingModels.setRed_ip(redIpv4Request.getRed_ip());
             exitingModels.setCidr(redIpv4Request.getCidr());
             exitingModels.setUse_type(redIpv4Request.getUse_type());
@@ -296,7 +299,6 @@ class RouterConfig {
 }
 
  */
-
 
 
 

@@ -11,6 +11,7 @@ public class RedIpv4Request {
     private Long id;
     private String name;
     private String name_router;
+    private Long idRouter;
     private String red_ip;
     private String cidr;
     private String use_type;

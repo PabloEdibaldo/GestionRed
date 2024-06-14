@@ -19,6 +19,8 @@ public class RedIpv4 {
     private String name;
     @Column(nullable = false)
     private String name_router;
+
+    private Long idRouter;
     @Column(nullable = false)
     private String red_ip;
     @Column(nullable = false)
