@@ -1,8 +1,9 @@
 package com.GestionRed.GestionRed.SmartOLT.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
+
+import java.util.List;
 
 
 public class dtoQueriesFromOtherMicroservicesPPPoE {
@@ -41,5 +42,6 @@ public class dtoQueriesFromOtherMicroservicesPPPoE {
         private String password;
         private String idOnu;
     }
+
 
 }

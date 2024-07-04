@@ -19,9 +19,7 @@ public class ServiceConfigOnus {
     @Autowired
     ApiProperties apiProperties;
 
-    public ResponseEntity<Object> OptionCase(int caseOption,
-                             String linkRequest,
-                             MultiValueMap<String, Object> requestDtoAuthorizeONU){
+    public ResponseEntity<Object> OptionCase(int caseOption, String linkRequest, MultiValueMap<String, Object> requestDtoAuthorizeONU){
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-Token", apiProperties.getToken());
         HttpEntity<String> entity = new HttpEntity<>(headers);
