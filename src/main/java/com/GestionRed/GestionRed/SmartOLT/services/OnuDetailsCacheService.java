@@ -3,30 +3,21 @@ package com.GestionRed.GestionRed.SmartOLT.services;
 import com.GestionRed.GestionRed.SmartOLT.models.OnuDetailsCache;
 import com.GestionRed.GestionRed.SmartOLT.repository.OnuDetailsRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.antlr.v4.runtime.misc.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.HttpClientErrorException;
 
-import javax.swing.text.html.parser.Entity;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 @Transactional
@@ -45,7 +36,7 @@ public class OnuDetailsCacheService {
         log.info("Data saved to database successfully.");
     }
 
-    public String getCacheResponseData() {
+    public Object getCacheResponseData() throws JsonProcessingException {
         Logger log = LoggerFactory.getLogger(this.getClass());
         ObjectMapper mapper = new ObjectMapper();
 
@@ -63,45 +54,34 @@ public class OnuDetailsCacheService {
             String modified = cleanedData.replaceAll("([a-zA-Z_]+):([^\\s,\\[\\]{}\"]+)", "\"$1\":\"$2\"")
                     .replaceAll(": null", ":null")
                     .replaceAll(": ", ":\"\"");
-
             String correctedJson = correctCommonIssues(modified);
 
-            try {
-                // Intenta parsear el JSON corregido
-                JsonNode jsonNode;
-                if (correctedJson.trim().startsWith("{")) {
-                    // Si comienza con '{', es un objeto
-                    jsonNode = mapper.readTree(correctedJson);
-                } else if (correctedJson.trim().startsWith("[")) {
-                    // Si comienza con '[', es un array
-                    jsonNode = mapper.readTree("{\"data\":" + correctedJson + "}");
-                } else {
-                    // Si no comienza ni con '{' ni con '[', lo envolvemos en un objeto
-                    jsonNode = mapper.readTree("{\"data\":" + correctedJson + "}");
-                }
+            return correctedJson.replaceAll("\"(\\d{4}-\\d{2}-\\d{2}) \"(\\d{2})\"\":\\s*\"(\\d{2})\":\\s*(\\d{2})", "\"$1 $2:$3:$4\"")
+                    .replaceAll("\"([^\"]+)\":\\s*,", "\"$1\": null,")
+                    .replaceAll("\"([^\"]+)\":\\s*}", "\"$1\": null}");
 
-                // Si el parseo es exitoso, devuelve el JSON formateado
-                return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
-            } catch (JsonProcessingException e) {
-                log.error("Error parsing JSON: " + e.getMessage());
-                // Si hay un error en el parseo, intenta una corrección más agresiva
-                correctedJson = "{\"data\":" + correctedJson.replaceAll("^\\s*\\{?\\s*", "").replaceAll("\\s*\\}?\\s*$", "") + "}";
-                try {
-                    JsonNode jsonNode = mapper.readTree(correctedJson);
-                    return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonNode);
-                } catch (JsonProcessingException e2) {
-                    log.error("Error parsing JSON after aggressive correction: " + e2.getMessage());
-                    // Si aún hay un error, devuelve el JSON corregido sin formatear
-                    return correctedJson;
-                }
-            }
+
+
+
+
         } else {
             log.error("No data found for ONU ID 1");
-            return "{}";  // Devuelve un JSON vacío en caso de que no haya datos
+            return null;  // Devuelve un JSON vacío en caso de que no haya datos
         }
     }
 
     private static String correctCommonIssues(  String badJSON) {
+        badJSON = badJSON.trim();
+
+        // Manejar el caso específico de "{ [" al inicio
+        if (badJSON.startsWith("{ [")) {
+            badJSON = badJSON.substring(2).trim(); // Eliminar '{ ['
+        }
+
+        // Manejar el caso específico de caracteres extra al final
+        while (badJSON.endsWith("]}") && badJSON.charAt(badJSON.lastIndexOf("]") - 1) == '}') {
+            badJSON = badJSON.substring(0, badJSON.length() - 1).trim();
+        }
         badJSON = badJSON.replaceAll("'", "\"");
         badJSON = badJSON.replaceAll(": ,", ": \"\",");
         badJSON = badJSON.replaceAll(": null", ": null");
@@ -113,9 +93,11 @@ public class OnuDetailsCacheService {
         badJSON = badJSON.replaceAll(":\\s*,", ": null,");
         badJSON = badJSON.replaceAll("\"([^\"]+)\"\\s+([^,:\\}]+)", "\"$1 $2\"");
         badJSON = badJSON.replaceAll("\"([^\"]+)\"\\s+([^,:\\}]+)\\s+([^,:\\}]+)\\s+([^,:\\}]+)", "\"$1 $2 $3 $4\"");
-        badJSON = badJSON.replaceAll("\"([^\"]+)\"\\s+([^,:\\}]+)", "\"$1 $2\"");
         badJSON = badJSON.replaceAll("\"(\\d{4}-\\d{2}-\\d{2})\"\\s+\"(\\d{2})\":\\s+\"(\\d{2})\":\\s+(\\d{2})", "\"$1 $2:$3:$4\"");
+
         return badJSON;
+
+
     }
 
         public Object getAllOnusDetails() {
@@ -130,4 +112,7 @@ public class OnuDetailsCacheService {
                 saveOrUpdateCache(responseData.toString());
             }
     }
+
+
+
 }
