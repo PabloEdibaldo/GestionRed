@@ -5,6 +5,7 @@ import com.GestionRed.GestionRed.SmartOLT.dto.dtoQueriesFromOtherMicroservicesPP
 import com.GestionRed.GestionRed.SmartOLT.services.OnuDetailsCacheService;
 import com.GestionRed.GestionRed.SmartOLT.services.ServiceConfigOnus;
 
+import com.GestionRed.GestionRed.SmartOLT.services.ServiceGraphDyONu;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,13 +15,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -33,6 +39,10 @@ public class ControllerSmartOlt {
     private final ServiceConfigOnus serviceConfigOnus;
     @Autowired
     private final OnuDetailsCacheService onuDetailsCacheService;
+    @Autowired
+    private final ServiceGraphDyONu serviceGraphDyONu;
+
+
 
     @GetMapping("getZones/")
     @ResponseStatus(HttpStatus.OK)
@@ -167,6 +177,27 @@ public class ControllerSmartOlt {
     @ResponseStatus(HttpStatus.OK)
     public Object GetOnusStatues() throws JsonProcessingException {
         return onuDetailsCacheService.getCacheResponseData();
+    }
+
+
+    @GetMapping("GetONUDetailsByONUUniqueExternalID/")
+    @ResponseStatus(HttpStatus.OK)
+    public Object GetONUDetailsByONUUniqueExternalID(@RequestParam int id){
+        return serviceConfigOnus.OptionCase(1,String.format("/onu/get_onu_details/%s",id),null);
+    }
+
+
+
+
+    @GetMapping("GetONUSignalGraphDyONuUniqueExternalID/")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Map<String,byte[]>> GetONUSignalGraphDyONuUniqueExternalID(@RequestParam int id){
+        return serviceGraphDyONu.GetONUSignalGraphDyONuUniqueExternalID(String.format("/onu/get_onu_signal_graph/%d/",id));
+    }
+    @GetMapping("GetONUTrafficGraphByONUUniqueExternalID/")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Map<String,byte[]>> GetONUTrafficGraphByONUUniqueExternalID(@RequestParam int id){
+        return serviceGraphDyONu.GetONUSignalGraphDyONuUniqueExternalID(String.format("/onu/get_onu_traffic_graph/%d/",id));
     }
 }
 

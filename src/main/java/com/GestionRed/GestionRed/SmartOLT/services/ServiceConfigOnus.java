@@ -11,6 +11,8 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
 
+import java.util.Map;
+
 @Slf4j
 @Service
 public class ServiceConfigOnus {
@@ -53,6 +55,19 @@ public class ServiceConfigOnus {
                 Object.class
         );
 
+        return response.getBody();
+    }
+    public byte[] getONUSignalGraph(String timeInterval,String url){
+        HttpHeaders headers =new HttpHeaders();
+        headers.set("X-Token", apiProperties.getToken());
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<byte[]> response = restTemplate.exchange(
+                apiProperties.getUrl()+url+"/"+timeInterval,
+                HttpMethod.GET,
+                entity,
+                byte[].class
+        );
         return response.getBody();
     }
 }

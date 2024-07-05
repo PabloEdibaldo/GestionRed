@@ -1,15 +1,9 @@
 package com.GestionRed.GestionRed.SmartOLT.services;
-
 import com.GestionRed.GestionRed.SmartOLT.models.OnuDetailsCache;
 import com.GestionRed.GestionRed.SmartOLT.repository.OnuDetailsRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
